@@ -9,7 +9,54 @@
 - **База данных:** SQLite (по умолчанию) или PostgreSQL
 - **Авторизация:** JWT
 
-## Установка и запуск
+---
+
+## 🚀 Для коллабораторов — как запустить сайт
+
+### Шаг 1. Клонировать репозиторий
+
+```bash
+git clone https://github.com/DiasIsenov06/ai-english-analyzer.git
+cd ai-english-analyzer
+```
+
+### Шаг 2. Установить зависимости
+
+```bash
+npm install
+```
+
+### Шаг 3. Настроить .env (обязательно!)
+
+1. Скопируй файл с примером:
+   ```bash
+   copy .env.example .env
+   ```
+   (на Mac/Linux: `cp .env.example .env`)
+
+2. Открой `.env` и заполни:
+   - **JWT_SECRET** — любая длинная случайная строка (например: `my-super-secret-key-123`)
+   - **GEMINI_API_KEY** — ключ из [Google AI Studio](https://aistudio.google.com/app/apikey) (для AI в чате и планах)
+   - Или **OPENAI_API_KEY** — если используешь OpenAI вместо Gemini
+
+### Шаг 4. Создать базу данных
+
+```bash
+npx prisma generate
+npx prisma db push
+```
+
+### Шаг 5. Запустить сайт
+
+```bash
+npm run dev
+```
+
+Сайт откроется по адресу: **http://localhost:3000**
+
+---
+
+## Установка и запуск (кратко)
 
 ### 1. Установка зависимостей
 
@@ -17,14 +64,18 @@
 npm install
 ```
 
-### 2. Инициализация базы данных
+### 2. Настройка .env
+
+Создай `.env` из `.env.example` и заполни `JWT_SECRET` и `GEMINI_API_KEY` (или `OPENAI_API_KEY`).
+
+### 3. Инициализация базы данных
 
 ```bash
 npx prisma generate
 npx prisma db push
 ```
 
-### 3. Запуск
+### 4. Запуск
 
 ```bash
 npm run dev
