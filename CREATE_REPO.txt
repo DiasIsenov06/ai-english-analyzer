@@ -1,0 +1,15 @@
+﻿CREATE GITHUB REPO FIRST
+========================
+
+1. Open this link in your browser:
+   https://github.com/new?name=ai-english-analyzer
+
+2. Do NOT add README, .gitignore, or license.
+   Leave the repo empty.
+
+3. Click "Create repository".
+
+4. Then run push.ps1 (right-click -> Run with PowerShell)
+   or from Cursor terminal: .\push.ps1
+
+========================
