@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// Для PostgreSQL раскомментируйте и закомментируйте выше:
+// provider = "postgresql"
+// url      = env("DATABASE_URL")
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  password     String
+  level        String?  // A1, A2, B1, B2, C1, C2
+  goal         String?  // IELTS, B2, Speaking
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  testResults  TestResult[]
+  studyPlans   StudyPlan[]
+  trainingSessions TrainingSession[]
+}
+
+model TestResult {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  score       Int
+  total       Int
+  level       String   // A1, A2, B1, B2
+  grammarScore     Int?
+  vocabularyScore  Int?
+  correctionScore  Int?
+  strengths   String?  // JSON array
+  weaknesses  String?  // JSON array
+  createdAt   DateTime @default(now())
+}
+
+model StudyPlan {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  metaJson  String   // JSON: level, goal, start_date, duration_days
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  days      StudyPlanDay[]
+}
+
+model StudyPlanDay {
+  id        String   @id @default(cuid())
+  planId    String
+  plan      StudyPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+  dayIndex  Int
+  date      DateTime
+  dataJson  String   // JSON: focus, tasks, estimated_minutes, type blocks
+  status    String   @default("pending") // pending, done, skipped
+  notes     String?
+}
+
+model TrainingSession {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status      String   @default("active") // active, completed
+  metaJson    String?  // JSON: source (plan/day or adhoc), level, goal
+  metricsJson String?  // JSON: accuracy, errors, etc.
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  messages    TrainingMessage[]
+}
+
+model TrainingMessage {
+  id        String   @id @default(cuid())
+  sessionId String
+  session   TrainingSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  role      String   // user, assistant, system
+  content   String
+  createdAt DateTime @default(now())
+}

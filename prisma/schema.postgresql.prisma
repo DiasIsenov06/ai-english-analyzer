@@ -1,0 +1,37 @@
+// Альтернативная схема для PostgreSQL
+// Переименуйте в schema.prisma и удалите оригинал, если нужен PostgreSQL
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  password     String
+  level        String?
+  goal         String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  testResults  TestResult[]
+}
+
+model TestResult {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  score       Int
+  total       Int
+  level       String
+  grammarScore     Int?
+  vocabularyScore  Int?
+  correctionScore  Int?
+  strengths   String?
+  weaknesses  String?
+  createdAt   DateTime @default(now())
+}

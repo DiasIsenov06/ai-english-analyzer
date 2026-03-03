@@ -1,0 +1,1820 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI English Learning Personal Analyzer — AI-анализ английского в реальном времени</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f8f8ff;
+      --bg-card: #ffffff;
+      --accent-start: #4F7CFF;
+      --accent-end: #6AE3FF;
+      --accent-gradient: linear-gradient(135deg, #4F7CFF 0%, #6AE3FF 100%);
+      --text-primary: #1a1a2e;
+      --text-secondary: #5c5c7a;
+      --text-muted: #8b8ba3;
+      --border: rgba(79, 124, 255, 0.15);
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+      --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.08);
+      --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.1);
+      --radius: 16px;
+      --radius-lg: 24px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Navigation */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: var(--shadow-sm);
+      transition: all 0.3s ease;
+    }
+
+    .nav-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-weight: 800;
+      font-size: 1.1rem;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--accent-start);
+    }
+
+    .nav-cta {
+      padding: 10px 20px;
+      background: var(--accent-gradient);
+      color: white !important;
+      border-radius: 12px;
+      -webkit-text-fill-color: white;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(79, 124, 255, 0.4);
+    }
+
+    .nav-burger {
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      cursor: pointer;
+      padding: 8px;
+    }
+
+    .nav-burger span {
+      width: 24px;
+      height: 2px;
+      background: var(--text-primary);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    .nav-burger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(6px, 6px);
+    }
+
+    .nav-burger.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .nav-burger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(6px, -6px);
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px 24px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      right: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(79, 124, 255, 0.08) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -10%;
+      left: -5%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(106, 227, 255, 0.06) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(79, 124, 255, 0.06) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    .hero-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: rgba(79, 124, 255, 0.08);
+      border: 1px solid rgba(79, 124, 255, 0.2);
+      border-radius: 100px;
+      font-size: 0.85rem;
+      color: var(--accent-start);
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+
+    .hero-badge-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--accent-start);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.2); }
+    }
+
+    .hero-title {
+      font-size: clamp(2.5rem, 5vw, 3.75rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
+
+    .hero-title .gradient {
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+      line-height: 1.7;
+    }
+
+    .hero-features {
+      margin-bottom: 40px;
+    }
+
+    .hero-feature {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      font-size: 1rem;
+      color: var(--text-secondary);
+    }
+
+    .hero-feature svg {
+      flex-shrink: 0;
+      color: #22c55e;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      text-decoration: none;
+      padding: 16px 28px;
+      background: var(--accent-gradient);
+      color: white;
+      border: none;
+      border-radius: 14px;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(79, 124, 255, 0.4);
+    }
+
+    .btn-secondary {
+      display: inline-block;
+      text-decoration: none;
+      padding: 16px 28px;
+      background: transparent;
+      color: var(--accent-start);
+      border: 2px solid var(--accent-start);
+      border-radius: 14px;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(79, 124, 255, 0.08);
+      transform: translateY(-2px);
+    }
+
+    .hero-social-proof {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .hero-avatars {
+      display: flex;
+    }
+
+    .hero-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid white;
+      background: var(--accent-gradient);
+      margin-left: -12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: white;
+      font-size: 0.85rem;
+    }
+
+    .hero-avatar:first-child {
+      margin-left: 0;
+    }
+
+    .hero-social-text {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    .hero-right {
+      position: relative;
+    }
+
+    .hero-dashboard {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
+      position: relative;
+    }
+
+    .hero-dashboard::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: calc(var(--radius-lg) + 2px);
+      padding: 2px;
+      background: var(--accent-gradient);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .hero-dashboard-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .dashboard-card {
+      background: var(--bg);
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .dashboard-card-title {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .dashboard-card-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .dashboard-level {
+      grid-column: span 2;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px;
+      background: linear-gradient(135deg, rgba(79, 124, 255, 0.08) 0%, rgba(106, 227, 255, 0.08) 100%);
+      border-radius: 12px;
+    }
+
+    .dashboard-level-from {
+      font-size: 1.25rem;
+      color: var(--text-muted);
+    }
+
+    .dashboard-level-arrow {
+      font-size: 1.5rem;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .dashboard-level-to {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent-start);
+    }
+
+    .hero-float-card {
+      position: absolute;
+      bottom: -20px;
+      right: -20px;
+      background: white;
+      padding: 16px 20px;
+      border-radius: 14px;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 2;
+    }
+
+    .hero-float-rating {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #f59e0b;
+    }
+
+    .hero-float-text {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .hero-blob {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: var(--accent-gradient);
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.2;
+      right: -100px;
+      bottom: -100px;
+      z-index: 0;
+    }
+
+    /* Marquee */
+    .marquee {
+      padding: 24px 0;
+      background: rgba(255, 255, 255, 0.6);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .marquee-track {
+      display: flex;
+      animation: marquee 25s linear infinite;
+    }
+
+    .marquee-inner {
+      display: flex;
+      flex-shrink: 0;
+    }
+
+    .marquee-item {
+      flex-shrink: 0;
+      padding: 0 40px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* Section base */
+    .section {
+      padding: 100px 24px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      font-weight: 800;
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+    }
+
+    .section-subtitle {
+      font-size: 1.15rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Features */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .feature-card {
+      background: white;
+      padding: 32px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-lg);
+      border-color: rgba(79, 124, 255, 0.3);
+    }
+
+    .feature-card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+
+    .feature-card p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* Stats */
+    .stats {
+      background: var(--accent-gradient);
+      padding: 80px 24px;
+      margin: 0;
+      max-width: none;
+    }
+
+    .stats-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 48px;
+      text-align: center;
+    }
+
+    .stat-item {
+      color: white;
+    }
+
+    .stat-value {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+
+    /* How it works */
+    .steps {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .step {
+      flex: 1;
+      min-width: 260px;
+      max-width: 320px;
+      text-align: center;
+      position: relative;
+    }
+
+    .step-number {
+      width: 56px;
+      height: 56px;
+      background: var(--accent-gradient);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin: 0 auto 24px;
+    }
+
+    .step h3 {
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+    }
+
+    .step p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    .step-connector {
+      position: absolute;
+      top: 28px;
+      left: calc(100% + 20px);
+      width: 40px;
+      height: 2px;
+      border-bottom: 2px dashed var(--accent-start);
+      opacity: 0.5;
+    }
+
+    .step:last-child .step-connector {
+      display: none;
+    }
+
+    /* Dashboard mockup */
+    .dashboard-section {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 48px;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border);
+    }
+
+    .dashboard-mockup {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .dashboard-mockup-item {
+      background: var(--bg);
+      padding: 24px;
+      border-radius: 12px;
+    }
+
+    .dashboard-mockup-item h4 {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .dashboard-mockup-item .value {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .progress-bar {
+      height: 8px;
+      background: rgba(79, 124, 255, 0.2);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--accent-gradient);
+      border-radius: 4px;
+      transition: width 1s ease;
+    }
+
+    /* Study plan */
+    .study-plan {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .study-plan-input, .study-plan-output {
+      background: white;
+      padding: 32px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border);
+    }
+
+    .study-plan h3 {
+      margin-bottom: 20px;
+      font-size: 1.2rem;
+    }
+
+    .study-plan ul {
+      list-style: none;
+    }
+
+    .study-plan li {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+
+    .study-plan li:last-child {
+      border-bottom: none;
+    }
+
+    /* Smart practice */
+    .smart-practice {
+      background: white;
+      padding: 48px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border);
+    }
+
+    .smart-practice-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .smart-practice h3 {
+      font-size: 1.5rem;
+      margin-bottom: 16px;
+    }
+
+    .smart-practice p {
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+
+    .smart-practice-flow {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .flow-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 20px;
+      background: var(--bg);
+      border-radius: 12px;
+      border-left: 4px solid var(--accent-start);
+    }
+
+    /* Gamification */
+    .gamification-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .gamification-card {
+      background: white;
+      padding: 28px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border);
+      transition: all 0.3s;
+    }
+
+    .gamification-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .gamification-card h4 {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      font-size: 1.1rem;
+    }
+
+    .gamification-card h4 span {
+      font-size: 1.5rem;
+    }
+
+    /* Pricing */
+    .pricing-toggle {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 48px;
+    }
+
+    .pricing-toggle-btn {
+      padding: 12px 24px;
+      border: 2px solid var(--border);
+      background: white;
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--text-secondary);
+      transition: all 0.2s;
+    }
+
+    .pricing-toggle-btn.active {
+      background: var(--accent-gradient);
+      color: white;
+      border-color: transparent;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .pricing-card {
+      background: white;
+      padding: 40px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      border: 2px solid var(--border);
+      position: relative;
+      transition: all 0.3s;
+    }
+
+    .pricing-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .pricing-card.featured {
+      border-color: transparent;
+      background: linear-gradient(white, white) padding-box,
+                  var(--accent-gradient) border-box;
+      border: 2px solid transparent;
+      transform: scale(1.05);
+    }
+
+    .pricing-card.featured:hover {
+      transform: scale(1.05) translateY(-4px);
+    }
+
+    .pricing-badge {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--accent-gradient);
+      color: white;
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .pricing-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 8px;
+    }
+
+    .pricing-card .price {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 24px;
+    }
+
+    .pricing-card ul {
+      list-style: none;
+    }
+
+    .pricing-card li {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .pricing-card li::before {
+      content: '✓';
+      color: #22c55e;
+      font-weight: 700;
+    }
+
+    .pricing-card .btn {
+      width: 100%;
+      margin-top: 24px;
+      padding: 16px;
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .pricing-card.featured .btn {
+      background: var(--accent-gradient);
+      color: white;
+      border: none;
+    }
+
+    .pricing-card:not(.featured) .btn {
+      background: transparent;
+      border: 2px solid var(--accent-start);
+      color: var(--accent-start);
+    }
+
+    /* FAQ */
+    .faq-list {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .faq-item {
+      background: white;
+      border-radius: var(--radius);
+      margin-bottom: 12px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .faq-question {
+      width: 100%;
+      padding: 24px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: none;
+      border: none;
+      font-family: inherit;
+      font-size: 1.05rem;
+      font-weight: 600;
+      text-align: left;
+      cursor: pointer;
+      color: var(--text-primary);
+      transition: background 0.2s;
+    }
+
+    .faq-question:hover {
+      background: var(--bg);
+    }
+
+    .faq-question::after {
+      content: '+';
+      font-size: 1.5rem;
+      color: var(--accent-start);
+      transition: transform 0.3s;
+      flex-shrink: 0;
+      margin-left: 16px;
+    }
+
+    .faq-item.active .faq-question::after {
+      transform: rotate(45deg);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+
+    .faq-answer-inner {
+      padding: 0 28px 24px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* GitHub */
+    .github-section {
+      background: #1a1a2e;
+      color: white;
+      padding: 80px 24px;
+      border-radius: var(--radius-lg);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .github-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .github-section h2 {
+      font-family: 'Manrope', sans-serif;
+      font-size: 2rem;
+      margin-bottom: 24px;
+    }
+
+    .github-section p {
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 32px;
+      font-family: 'Manrope', sans-serif;
+    }
+
+    .github-code {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 24px;
+      border-radius: 12px;
+      margin-bottom: 32px;
+      overflow-x: auto;
+    }
+
+    .github-code .comment { color: #6b7280; }
+    .github-code .key { color: #6AE3FF; }
+    .github-code .string { color: #22c55e; }
+
+    .github-buttons {
+      display: flex;
+      gap: 16px;
+    }
+
+    .github-buttons .btn-secondary {
+      border-color: rgba(255, 255, 255, 0.5);
+      color: white;
+    }
+
+    .github-buttons .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* CTA */
+    .cta-section {
+      background: var(--accent-gradient);
+      padding: 80px 24px;
+      border-radius: var(--radius-lg);
+      text-align: center;
+    }
+
+    .cta-section h2 {
+      color: white;
+      font-size: clamp(1.75rem, 3vw, 2.5rem);
+      margin-bottom: 32px;
+      font-weight: 800;
+    }
+
+    .cta-form {
+      display: flex;
+      max-width: 480px;
+      margin: 0 auto;
+      gap: 12px;
+    }
+
+    .cta-form input {
+      flex: 1;
+      padding: 18px 24px;
+      border: none;
+      border-radius: 14px;
+      font-family: inherit;
+      font-size: 1rem;
+    }
+
+    .cta-form input:focus {
+      outline: 3px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .cta-form button {
+      padding: 18px 32px;
+      background: white;
+      color: var(--accent-start);
+      border: none;
+      border-radius: 14px;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .cta-form button:hover {
+      transform: scale(1.05);
+    }
+
+    /* Footer */
+    .footer {
+      background: #e8e8f0;
+      padding: 64px 24px 32px;
+    }
+
+    .footer-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 48px;
+    }
+
+    .footer-logo {
+      font-weight: 800;
+      font-size: 1.1rem;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 16px;
+    }
+
+    .footer-links h4 {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .footer-links a {
+      display: block;
+      color: var(--text-secondary);
+      text-decoration: none;
+      margin-bottom: 12px;
+      font-size: 0.95rem;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent-start);
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .footer-social a {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      transition: all 0.2s;
+    }
+
+    .footer-social a:hover {
+      background: var(--accent-gradient);
+      color: white;
+    }
+
+    .footer-social svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .footer-bottom {
+      padding-top: 32px;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* Scroll animations */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .hero-inner {
+        grid-template-columns: 1fr;
+        gap: 48px;
+        text-align: center;
+      }
+
+      .hero-left {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .hero-features {
+        text-align: left;
+      }
+
+      .hero-buttons {
+        justify-content: center;
+      }
+
+      .hero-social-proof {
+        justify-content: center;
+      }
+
+      .hero-right {
+        order: -1;
+      }
+
+      .hero-dashboard-content {
+        grid-template-columns: 1fr;
+      }
+
+      .dashboard-level {
+        grid-column: span 1;
+      }
+
+      .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .stats-inner {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 40px;
+      }
+
+      .steps {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .step-connector {
+        display: none !important;
+      }
+
+      .study-plan,
+      .smart-practice-content {
+        grid-template-columns: 1fr;
+      }
+
+      .pricing-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .pricing-card.featured {
+        transform: none;
+      }
+
+      .footer-top {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: white;
+        flex-direction: column;
+        padding: 24px;
+        box-shadow: var(--shadow-lg);
+        transform: translateY(-150%);
+        transition: transform 0.3s;
+        z-index: 999;
+      }
+
+      .nav-links.active {
+        transform: translateY(0);
+      }
+
+      .nav-burger {
+        display: flex;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .cta-form {
+        flex-direction: column;
+      }
+
+      .footer-top {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .footer-social {
+        justify-content: center;
+      }
+
+      .gamification-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .dashboard-mockup {
+        grid-template-columns: 1fr;
+      }
+
+      .github-buttons {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">AI English Analyzer</a>
+      <div class="nav-links">
+        <a href="#features">Возможности</a>
+        <a href="#faq">FAQ</a>
+        <a href="/login">Вход</a>
+        <a href="/register" class="nav-cta">Пройти диагностику</a>
+      </div>
+      <div class="nav-burger" aria-label="Меню">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-inner">
+      <div class="hero-left reveal">
+        <div class="hero-badge">
+          <span class="hero-badge-dot"></span>
+          AI-анализ вашего английского в реальном времени
+        </div>
+        <h1 class="hero-title">
+          Пойми свой реальный уровень английского с помощью<br>
+          <span class="gradient">AI-анализа</span>
+        </h1>
+        <p class="hero-subtitle">
+          Персональная диагностика, анализ ошибок и умный план обучения<br>
+          от A1 до C2 — полностью автоматически.
+        </p>
+        <div class="hero-features">
+          <div class="hero-feature">
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            AI определяет слабые грамматические темы
+          </div>
+          <div class="hero-feature">
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            Анализирует словарный запас и ошибки
+          </div>
+          <div class="hero-feature">
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            Создаёт персональный план обучения
+          </div>
+        </div>
+        <div class="hero-buttons">
+          <a href="/register" class="btn-primary">Пройти AI-диагностику</a>
+          <a href="/login" class="btn-secondary">Войти</a>
+        </div>
+        <div class="hero-social-proof">
+          <div class="hero-avatars">
+            <div class="hero-avatar">А</div>
+            <div class="hero-avatar">М</div>
+            <div class="hero-avatar">К</div>
+            <div class="hero-avatar">Е</div>
+          </div>
+          <span class="hero-social-text">1200+ студентов уже улучшили уровень</span>
+        </div>
+      </div>
+      <div class="hero-right reveal">
+        <div class="hero-dashboard">
+          <div class="hero-dashboard-content">
+            <div class="dashboard-card">
+              <div class="dashboard-card-title">Grammar</div>
+              <div class="dashboard-card-value">72%</div>
+            </div>
+            <div class="dashboard-card">
+              <div class="dashboard-card-title">Vocabulary</div>
+              <div class="dashboard-card-value">1,240</div>
+            </div>
+            <div class="dashboard-level">
+              <span class="dashboard-level-from">A2</span>
+              <span class="dashboard-level-arrow">→</span>
+              <span class="dashboard-level-to">B1</span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-float-card">
+          <span class="hero-float-rating">⭐ 4.9 / 5</span>
+          <span class="hero-float-text">Средний рост уровня — +1.2 за 6 недель</span>
+        </div>
+        <div class="hero-blob"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Marquee -->
+  <div class="marquee">
+    <div class="marquee-track">
+      <div class="marquee-inner">
+        <span class="marquee-item">IELTS</span>
+        <span class="marquee-item">TOEFL</span>
+        <span class="marquee-item">Academic English</span>
+        <span class="marquee-item">Speaking Practice</span>
+        <span class="marquee-item">AI Assessment</span>
+        <span class="marquee-item">Grammar Engine</span>
+        <span class="marquee-item">Vocabulary System</span>
+      </div>
+      <div class="marquee-inner" aria-hidden="true">
+        <span class="marquee-item">IELTS</span>
+        <span class="marquee-item">TOEFL</span>
+        <span class="marquee-item">Academic English</span>
+        <span class="marquee-item">Speaking Practice</span>
+        <span class="marquee-item">AI Assessment</span>
+        <span class="marquee-item">Grammar Engine</span>
+        <span class="marquee-item">Vocabulary System</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <section class="section" id="features">
+    <div class="section-header reveal">
+      <h2 class="section-title">Возможности AI-платформы</h2>
+      <p class="section-subtitle">Полный набор инструментов для диагностики и улучшения английского</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <h3>AI Placement Test</h3>
+        <p>Grammar, Vocabulary, Reading, Listening, Writing, Speaking — комплексная оценка всех навыков</p>
+      </div>
+      <div class="feature-card reveal">
+        <h3>Grammar Weakness Detection</h3>
+        <p>Articles, Tenses, Conditionals, Passive Voice — точное определение слабых мест</p>
+      </div>
+      <div class="feature-card reveal">
+        <h3>Vocabulary Gap Analysis</h3>
+        <p>A1–C2, Academic words, Daily conversation — анализ пробелов в лексике</p>
+      </div>
+      <div class="feature-card reveal">
+        <h3>Error Analysis Engine</h3>
+        <p>Grammar error, Wrong tense, Word order, Spelling — детальный разбор каждой ошибки</p>
+      </div>
+      <div class="feature-card reveal">
+        <h3>Speaking Analyzer</h3>
+        <p>Voice input, pronunciation check, accent analysis — оценка разговорных навыков</p>
+      </div>
+      <div class="feature-card reveal">
+        <h3>Writing Feedback AI</h3>
+        <p>Grammar score, Vocabulary score, IELTS band prediction — экспертная обратная связь</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="stats">
+    <div class="stats-inner">
+      <div class="stat-item reveal">
+        <div class="stat-value" data-target="1200" data-suffix="+">0+</div>
+        <div class="stat-label">пользователей</div>
+      </div>
+      <div class="stat-item reveal">
+        <div class="stat-value" data-target="85" data-suffix="%">0%</div>
+        <div class="stat-label">точность AI-оценки</div>
+      </div>
+      <div class="stat-item reveal">
+        <div class="stat-value" data-target="50000" data-suffix="+">0+</div>
+        <div class="stat-label">проанализированных ошибок</div>
+      </div>
+      <div class="stat-item reveal">
+        <div class="stat-value" data-target="37" data-suffix="%">0%</div>
+        <div class="stat-label">рост уровня за 2 месяца</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="section">
+    <div class="section-header reveal">
+      <h2 class="section-title">Как это работает</h2>
+      <p class="section-subtitle">Три простых шага до персонального плана обучения</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-number">1</div>
+        <div class="step-connector"></div>
+        <h3>Пройди AI-диагностический тест</h3>
+        <p>За 20 минут получи точную оценку уровня по всем аспектам языка</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-number">2</div>
+        <div class="step-connector"></div>
+        <h3>Получи анализ слабых тем и ошибок</h3>
+        <p>Детальный отчёт с рекомендациями и приоритетами для изучения</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-number">3</div>
+        <h3>Учись по персональному плану</h3>
+        <p>Адаптивные упражнения, которые подстраиваются под твой прогресс</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dashboard -->
+  <section class="section">
+    <div class="section-header reveal">
+      <h2 class="section-title">Дашборд и прогресс</h2>
+      <p class="section-subtitle">Визуализация вашего развития в реальном времени</p>
+    </div>
+    <div class="dashboard-section reveal">
+      <div class="dashboard-mockup">
+        <div class="dashboard-mockup-item">
+          <h4>Общий уровень (A1–C2)</h4>
+          <div class="value">B1</div>
+          <div class="progress-bar"><div class="progress-bar-fill" style="width: 55%"></div></div>
+        </div>
+        <div class="dashboard-mockup-item">
+          <h4>Grammar %</h4>
+          <div class="value">72%</div>
+          <div class="progress-bar"><div class="progress-bar-fill" style="width: 72%"></div></div>
+        </div>
+        <div class="dashboard-mockup-item">
+          <h4>Vocabulary size</h4>
+          <div class="value">1,240 слов</div>
+        </div>
+        <div class="dashboard-mockup-item">
+          <h4>Weekly progress</h4>
+          <div class="value">+12%</div>
+        </div>
+        <div class="dashboard-mockup-item">
+          <h4>Error reduction</h4>
+          <div class="value">Weak → Strong</div>
+          <div class="progress-bar"><div class="progress-bar-fill" style="width: 80%"></div></div>
+        </div>
+        <div class="dashboard-mockup-item">
+          <h4>Тесты выполнено</h4>
+          <div class="value">47</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Study plan -->
+  <section class="section">
+    <div class="section-header reveal">
+      <h2 class="section-title">Персональный план обучения</h2>
+      <p class="section-subtitle">Пример того, как AI создаёт индивидуальную программу</p>
+    </div>
+    <div class="study-plan">
+      <div class="study-plan-input reveal">
+        <h3>Если пользователь:</h3>
+        <ul>
+          <li>Плохо знает Articles</li>
+          <li>Допускает ошибки в Present Simple</li>
+          <li>Знает 500 слов</li>
+        </ul>
+      </div>
+      <div class="study-plan-output reveal">
+        <h3>AI создаёт план:</h3>
+        <ul>
+          <li><strong>Неделя 1:</strong> Теория Present Simple, 50 базовых глаголов, 20 упражнений на Articles</li>
+          <li><strong>Неделя 2:</strong> Present Continuous, Daily vocabulary, Writing practice</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Smart practice -->
+  <section class="section">
+    <div class="section-header reveal">
+      <h2 class="section-title">Smart Practice Mode</h2>
+      <p class="section-subtitle">Адаптивный алгоритм подстраивается под вас</p>
+    </div>
+    <div class="smart-practice reveal">
+      <div class="smart-practice-content">
+        <div>
+          <h3>Умная адаптация в реальном времени</h3>
+          <p>Система анализирует каждую вашу ошибку и правильный ответ, динамически корректируя интенсивность и сложность заданий.</p>
+        </div>
+        <div class="smart-practice-flow">
+          <div class="flow-item">
+            Ошибки по теме → AI увеличивает количество заданий
+          </div>
+          <div class="flow-item">
+            Правильные ответы → переход на следующий уровень
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gamification -->
+  <section class="section">
+    <div class="section-header reveal">
+      <h2 class="section-title">Геймификация</h2>
+      <p class="section-subtitle">Мотивация через достижения и прогресс</p>
+    </div>
+    <div class="gamification-grid">
+      <div class="gamification-card reveal">
+        <h4><span>⚡</span> XP система</h4>
+        <p>Зарабатывайте очки опыта за каждое выполненное задание и повышайте свой ранг</p>
+      </div>
+      <div class="gamification-card reveal">
+        <h4><span>📈</span> Level Up</h4>
+        <p>Повышение уровня при достижении целей — видимый прогресс вашего роста</p>
+      </div>
+      <div class="gamification-card reveal">
+        <h4><span>🔥</span> Streak</h4>
+        <p>Ежедневные занятия поддерживают серию — не прерывайте цепочку успехов</p>
+      </div>
+      <div class="gamification-card reveal">
+        <h4><span>🏆</span> Badges & Ranking</h4>
+        <p>Значки за достижения и рейтинг среди пользователей — соревнуйтесь с собой и другими</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="section-header reveal">
+      <h2 class="section-title">Частые вопросы</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item reveal">
+        <button class="faq-question">Чем AI лучше обычных курсов?</button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">AI анализирует каждую вашу ошибку в реальном времени и создаёт персональную программу, которая фокусируется именно на ваших слабых местах. Обычные курсы предлагают один путь для всех — мы подстраиваемся под вас.</div>
+        </div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-question">Как оценивается Speaking?</button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Мы используем Speech-to-Text и NLP для анализа произношения, беглости речи и грамматики в реальном времени. Система даёт обратную связь по каждому произнесённому предложению.</div>
+        </div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-question">Подходит ли для IELTS?</button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Да! В тарифе Premium доступна специализированная подготовка к IELTS с предсказанием band score и детальным анализом по каждому модулю экзамена.</div>
+        </div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-question">Можно ли начать с нуля?</button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Конечно! Система определяет уровень от A1 до C2. Если вы начинаете с нуля, AI создаст план с базовой лексикой и грамматикой, постепенно усложняя материал.</div>
+        </div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-question">Как обновляется персональный план?</button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">План обновляется автоматически после каждой сессии. AI отслеживает ваш прогресс, количество ошибок по темам и корректирует интенсивность и приоритеты обучения.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section" id="cta">
+    <div class="cta-section reveal">
+      <h2>Начни понимать свой английский с помощью AI уже сегодня</h2>
+      <form class="cta-form">
+        <input type="email" placeholder="Введите ваш email" required>
+        <button type="submit">Начать бесплатно</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div>
+          <div class="footer-logo">AI English Learning Personal Analyzer</div>
+          <p style="color: var(--text-secondary); max-width: 280px; margin-bottom: 16px;">AI-анализ английского языка в реальном времени. Персональная диагностика и умный план обучения.</p>
+          <div class="footer-social">
+            <a href="#" aria-label="Telegram"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></a>
+            <a href="#" aria-label="VK"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.684 0H8.316C1.592 0 0 1.592 0 8.316v7.368C0 22.408 1.592 24 8.316 24h7.368C22.408 24 24 22.408 24 15.684V8.316C24 1.592 22.408 0 15.684 0zm3.692 17.123h-1.744c-.66 0-.862-.525-2.049-1.727-1.033-1-1.49-1.135-1.744-1.135-.356 0-.458.102-.458.593v1.575c0 .424-.135.678-1.253.678-1.846 0-3.896-1.118-5.335-3.202C4.624 10.857 4.03 8.57 4.03 8.096c0-.254.102-.491.593-.491h1.744c.44 0 .61.203.78.677.863 2.49 2.303 4.675 2.896 4.675.22 0 .322-.102.322-.66V9.721c-.068-1.186-.695-1.287-.695-1.71 0-.203.17-.407.44-.407h2.744c.373 0 .508.203.508.643v3.473c0 .372.17.508.271.508.22 0 .407-.136.813-.542 1.254-1.406 2.151-3.574 2.151-3.574.119-.254.322-.491.763-.491h1.744c.525 0 .644.27.525.643-.22 1.017-2.354 4.031-2.354 4.031-.186.305-.254.44 0 .78.186.254.796.779 1.203 1.253.745.847 1.32 1.558 1.473 2.05.17.49-.085.744-.576.744z"/></svg></a>
+            <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <h4>Product</h4>
+          <a href="#features">Возможности</a>
+          <a href="/register">Регистрация</a>
+          <a href="/test">Пройти тест</a>
+        </div>
+        <div class="footer-links">
+          <h4>AI</h4>
+          <a href="#">Как это работает</a>
+          <a href="#">Точность</a>
+        </div>
+        <div class="footer-links">
+          <h4>Приложение</h4>
+          <a href="/login">Вход</a>
+          <a href="/dashboard">Dashboard</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 AI English Learning Personal Analyzer. Все права защищены.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Burger menu
+    const burger = document.querySelector('.nav-burger');
+    const navLinks = document.querySelector('.nav-links');
+
+    burger?.addEventListener('click', () => {
+      burger.classList.toggle('active');
+      navLinks?.classList.toggle('active');
+      document.body.style.overflow = navLinks?.classList.contains('active') ? 'hidden' : '';
+    });
+
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        burger?.classList.remove('active');
+        navLinks?.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+    });
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+
+    const revealOnScroll = () => {
+      reveals.forEach(el => {
+        const windowHeight = window.innerHeight;
+        const elTop = el.getBoundingClientRect().top;
+        const trigger = 150;
+
+        if (elTop < windowHeight - trigger) {
+          el.classList.add('active');
+        }
+      });
+    };
+
+    window.addEventListener('scroll', revealOnScroll);
+    window.addEventListener('load', revealOnScroll);
+
+    // Animated counters
+    const animateCounter = (el, target, suffix = '') => {
+      const duration = 2000;
+      const start = 0;
+      const startTime = performance.now();
+
+      const update = (currentTime) => {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easeOut = 1 - Math.pow(1 - progress, 3);
+        const current = Math.floor(start + (target - start) * easeOut);
+        el.textContent = current >= 1000 ? current.toLocaleString('ru') + suffix : current + suffix;
+        if (progress < 1) requestAnimationFrame(update);
+      };
+
+      requestAnimationFrame(update);
+    };
+
+    const observerOptions = { threshold: 0.5 };
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const target = parseInt(el.dataset.target);
+          const suffix = el.dataset.suffix || '';
+          if (!el.dataset.animated) {
+            animateCounter(el, target, suffix);
+            el.dataset.animated = 'true';
+          }
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.stat-value').forEach(stat => {
+      const suffix = stat.dataset.suffix || '';
+      stat.textContent = '0' + suffix;
+      statsObserver.observe(stat);
+    });
+
+    // FAQ accordion
+    document.querySelectorAll('.faq-question').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.parentElement;
+        const wasActive = item.classList.contains('active');
+        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+        if (!wasActive) item.classList.add('active');
+      });
+    });
+
+    // Pricing toggle
+    const periodSpans = document.querySelectorAll('.period');
+    document.querySelectorAll('.pricing-toggle-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.pricing-toggle-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const isYear = btn.dataset.period === 'year';
+        periodSpans.forEach(span => {
+          span.textContent = isYear ? '/год' : '/мес';
+        });
+      });
+    });
+
+    // CTA form
+    document.querySelector('.cta-form')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      window.location.href = '/register';
+    });
+  </script>
+</body>
+</html>

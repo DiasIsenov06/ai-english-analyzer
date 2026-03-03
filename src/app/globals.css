@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #f8f8ff;
+  --accent-start: #4F7CFF;
+  --accent-end: #6AE3FF;
+}
+
+body {
+  background: var(--bg);
+}
+
+@layer utilities {
+  .gradient-accent {
+    @apply bg-gradient-to-r from-accent-start to-accent-end;
+  }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
