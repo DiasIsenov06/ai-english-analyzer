@@ -6,12 +6,49 @@
 
 - **Frontend:** Next.js 14 (App Router), React, Tailwind CSS
 - **Backend:** Next.js API Routes
-- **База данных:** SQLite (по умолчанию) или PostgreSQL
+- **База данных:** PostgreSQL (через Docker)
 - **Авторизация:** JWT
 
 ---
 
+## 🐳 Запуск через Docker (рекомендуется)
+
+**База данных и приложение в Docker** — одна команда, всё поднимается.
+
+### Требования: [Docker Desktop](https://docs.docker.com/get-docker/)
+
+```bash
+git clone https://github.com/DiasIsenov06/ai-english-analyzer.git
+cd ai-english-analyzer
+```
+
+Создай `.env`:
+```
+JWT_SECRET=любая-секретная-строка
+GEMINI_API_KEY=твой-ключ
+```
+
+**Запуск (база + приложение):**
+```bash
+docker-compose up -d --build
+```
+
+Сайт: **http://localhost:3000**
+
+**Остановка:**
+```bash
+docker-compose down
+```
+
+Данные БД сохраняются между перезапусками (Docker volume).
+
+---
+
 ## 🚀 Для коллабораторов — как запустить сайт
+
+**Вариант A — Docker (общая база, см. выше)**
+
+**Вариант B — Локально (своя база)**
 
 ### Шаг 1. Клонировать репозиторий
 
@@ -20,24 +57,23 @@ git clone https://github.com/DiasIsenov06/ai-english-analyzer.git
 cd ai-english-analyzer
 ```
 
-### Шаг 2. Установить зависимости
+### Шаг 2. Запустить PostgreSQL (Docker)
+
+```bash
+docker-compose up -d db
+```
+
+### Шаг 3. Установить зависимости и .env
 
 ```bash
 npm install
+copy .env.example .env   # Mac/Linux: cp .env.example .env
 ```
 
-### Шаг 3. Настроить .env (обязательно!)
-
-1. Скопируй файл с примером:
-   ```bash
-   copy .env.example .env
-   ```
-   (на Mac/Linux: `cp .env.example .env`)
-
-2. Открой `.env` и заполни:
-   - **JWT_SECRET** — любая длинная случайная строка (например: `my-super-secret-key-123`)
-   - **GEMINI_API_KEY** — ключ из [Google AI Studio](https://aistudio.google.com/app/apikey) (для AI в чате и планах)
-   - Или **OPENAI_API_KEY** — если используешь OpenAI вместо Gemini
+В `.env` заполни:
+- **DATABASE_URL** — `postgresql://ai_user:ai_password@localhost:5432/ai_english_analyzer`
+- **JWT_SECRET** — любая случайная строка
+- **GEMINI_API_KEY** — опционально, для AI
 
 ### Шаг 4. Создать базу данных
 
@@ -52,7 +88,7 @@ npx prisma db push
 npm run dev
 ```
 
-Сайт откроется по адресу: **http://localhost:3000**
+Сайт: **http://localhost:3000**
 
 ---
 
@@ -94,15 +130,14 @@ npm run dev
 | `/result` | Результат теста |
 | `/dashboard` | Личный кабинет (требует авторизации) |
 
-## Использование PostgreSQL
+## Переменные окружения
 
-1. Установите PostgreSQL
-2. Создайте базу: `createdb ai_english_analyzer`
-3. В `prisma/schema.prisma` измените:
-   - `provider = "postgresql"`
-   - `url = env("DATABASE_URL")`
-4. Создайте `.env` с `DATABASE_URL="postgresql://user:password@localhost:5432/ai_english_analyzer"`
-5. Выполните `npx prisma db push`
+| Переменная | Описание |
+|------------|----------|
+| `DATABASE_URL` | PostgreSQL (в Docker задаётся автоматически) |
+| `JWT_SECRET` | Секрет для JWT-токенов |
+| `GEMINI_API_KEY` | Ключ Google AI (для чата и планов) |
+| `OPENAI_API_KEY` | Альтернатива Gemini |
 
 ## API
 

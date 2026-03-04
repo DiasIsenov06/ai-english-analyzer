@@ -1,0 +1,40 @@
+name: ai-english-analyzer
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: ai-english-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ai_user
+      POSTGRES_PASSWORD: ai_password
+      POSTGRES_DB: ai_english_analyzer
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ai_user -d ai_english_analyzer"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: ai-english-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql://ai_user:ai_password@db:5432/ai_english_analyzer
+      JWT_SECRET: ${JWT_SECRET:-change-this-secret-in-production}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:

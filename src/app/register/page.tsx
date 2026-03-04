@@ -17,9 +17,9 @@ export default function RegisterPage() {
     e.preventDefault();
     setError("");
     setLoading(true);
-    const ok = await register({ email, password, level: level || undefined, goal: goal || undefined });
+    const result = await register({ email, password, level: level || undefined, goal: goal || undefined });
     setLoading(false);
-    if (!ok) setError("Ошибка регистрации. Возможно, email уже занят.");
+    if (!result.ok) setError(result.error || "Ошибка регистрации.");
   };
 
   return (

@@ -59,16 +59,17 @@ export async function POST(
       try {
         if (useGemini) {
           // Gemini API (generativelanguage.googleapis.com)
-          const history = session.messages
-            .slice(-6)
-            .flatMap((m) =>
-              m.role === "assistant"
-                ? [{ role: "model" as const, parts: [{ text: m.content }] }]
-                : [{ role: "user" as const, parts: [{ text: m.content }] }]
-            );
-          const contents = [
+          type GeminiMsg =
+            | { role: "user"; parts: { text: string }[] }
+            | { role: "model"; parts: { text: string }[] };
+          const history: GeminiMsg[] = session.messages.slice(-6).map((m) =>
+            m.role === "assistant"
+              ? { role: "model" as const, parts: [{ text: m.content }] }
+              : { role: "user" as const, parts: [{ text: m.content }] }
+          );
+          const contents: GeminiMsg[] = [
             ...history,
-            { role: "user" as const, parts: [{ text: content }] },
+            { role: "user", parts: [{ text: content }] },
           ];
 
           const model = process.env.GEMINI_MODEL || "gemini-2.5-flash";

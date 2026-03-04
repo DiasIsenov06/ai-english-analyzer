@@ -3,13 +3,13 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
-// Для PostgreSQL раскомментируйте и закомментируйте выше:
-// provider = "postgresql"
-// url      = env("DATABASE_URL")
+// Для локальной разработки без Docker (SQLite):
+// provider = "sqlite"
+// url      = "file:./dev.db"
 
 model User {
   id           String   @id @default(cuid())

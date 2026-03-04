@@ -25,7 +25,7 @@ type AuthContextType = {
     password: string;
     level?: string;
     goal?: string;
-  }) => Promise<boolean>;
+  }) => Promise<{ ok: boolean; error?: string }>;
   logout: () => void;
 };
 
@@ -87,7 +87,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     password: string;
     level?: string;
     goal?: string;
-  }): Promise<boolean> => {
+  }): Promise<{ ok: boolean; error?: string }> => {
     try {
       const res = await fetch("/api/auth/register", {
         method: "POST",
@@ -95,7 +95,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         body: JSON.stringify(data),
       });
       const json = await res.json();
-      if (!res.ok) return false;
+      if (!res.ok) {
+        return { ok: false, error: json.error || "Ошибка регистрации" };
+      }
       localStorage.setItem("token", json.token);
       localStorage.setItem(
         "user",
@@ -113,9 +115,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         goal: json.user.goal,
       });
       router.push("/test");
-      return true;
-    } catch {
-      return false;
+      return { ok: true };
+    } catch (e) {
+      return { ok: false, error: "Нет связи с сервером. Проверьте подключение." };
     }
   };
 

@@ -1,0 +1,22 @@
+# Только приложение — подключается к ТВОЕЙ PostgreSQL (pgAdmin)
+name: ai-english-analyzer
+# Запуск: docker-compose -f docker-compose.app-only.yml up -d
+#
+# В .env укажи DATABASE_URL с host.docker.internal вместо localhost:
+# DATABASE_URL="postgresql://postgres:ПАРОЛЬ@host.docker.internal:5432/ИИ%20Английский"
+# (пробел в имени БД = %20, кириллица — можно как есть или URL-encoded)
+
+services:
+  app:
+    build: .
+    container_name: ai-english-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      JWT_SECRET: ${JWT_SECRET}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}

@@ -32,10 +32,16 @@ export async function POST(request: Request) {
         goal: user.goal,
       },
     });
-  } catch (e) {
-    console.error(e);
+  } catch (e: unknown) {
+    console.error("Register error:", e);
+    const prisma = e as { code?: string };
+    const isDuplicate = prisma?.code === "P2002";
     return NextResponse.json(
-      { error: "Ошибка регистрации" },
+      {
+        error: isDuplicate
+          ? "Пользователь с таким email уже существует"
+          : "Ошибка сервера. Проверьте подключение к базе данных.",
+      },
       { status: 500 }
     );
   }
