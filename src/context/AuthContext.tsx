@@ -14,6 +14,7 @@ type User = {
   email: string;
   level?: string;
   goal?: string;
+  hasCompletedOnboarding: boolean;
 };
 
 type AuthContextType = {
@@ -39,14 +40,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const token = localStorage.getItem("token");
     const userData = localStorage.getItem("user");
+
     if (token && userData) {
       try {
-        setUser(JSON.parse(userData));
+        const parsedUser = JSON.parse(userData);
+
+        setUser({
+          id: parsedUser.id,
+          email: parsedUser.email,
+          level: parsedUser.level,
+          goal: parsedUser.goal,
+          hasCompletedOnboarding:
+            parsedUser.hasCompletedOnboarding ?? false,
+        });
       } catch {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
       }
     }
+
     setIsLoading(false);
   }, []);
 
@@ -57,24 +69,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
+
       const data = await res.json();
       if (!res.ok) return false;
-      localStorage.setItem("token", data.token);
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          id: data.user.id,
-          email: data.user.email,
-          level: data.user.level,
-          goal: data.user.goal,
-        })
-      );
-      setUser({
+
+      const userToStore: User = {
         id: data.user.id,
         email: data.user.email,
         level: data.user.level,
         goal: data.user.goal,
-      });
+        hasCompletedOnboarding: data.user.hasCompletedOnboarding ?? false,
+      };
+
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(userToStore));
+
+      setUser(userToStore);
+
       router.push("/dashboard");
       return true;
     } catch {
@@ -94,30 +105,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
+
       const json = await res.json();
+
       if (!res.ok) {
         return { ok: false, error: json.error || "Ошибка регистрации" };
       }
-      localStorage.setItem("token", json.token);
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          id: json.user.id,
-          email: json.user.email,
-          level: json.user.level,
-          goal: json.user.goal,
-        })
-      );
-      setUser({
+
+      const userToStore: User = {
         id: json.user.id,
         email: json.user.email,
         level: json.user.level,
         goal: json.user.goal,
-      });
-      router.push("/test");
+        hasCompletedOnboarding: json.user.hasCompletedOnboarding ?? false,
+      };
+
+      localStorage.setItem("token", json.token);
+      localStorage.setItem("user", JSON.stringify(userToStore));
+
+      setUser(userToStore);
+
+      router.push("/welcome");
       return { ok: true };
-    } catch (e) {
-      return { ok: false, error: "Нет связи с сервером. Проверьте подключение." };
+    } catch {
+      return {
+        ok: false,
+        error: "Нет связи с сервером. Проверьте подключение.",
+      };
     }
   };
 

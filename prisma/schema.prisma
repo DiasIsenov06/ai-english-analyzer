@@ -12,31 +12,33 @@ datasource db {
 // url      = "file:./dev.db"
 
 model User {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  password     String
-  level        String?  // A1, A2, B1, B2, C1, C2
-  goal         String?  // IELTS, B2, Speaking
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  testResults  TestResult[]
-  studyPlans   StudyPlan[]
-  trainingSessions TrainingSession[]
+  id                      String   @id @default(cuid())
+  email                   String   @unique
+  password                String
+  level                   String?  // A1, A2, B1, B2, C1, C2
+  goal                    String?  // IELTS, B2, Speaking
+  hasCompletedOnboarding  Boolean  @default(false)
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+  testResults             TestResult[]
+  studyPlans              StudyPlan[]
+  trainingSessions        TrainingSession[]
+  userVocabulary          UserVocabulary[]
 }
 
 model TestResult {
-  id          String   @id @default(cuid())
-  userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  score       Int
-  total       Int
-  level       String   // A1, A2, B1, B2
+  id               String   @id @default(cuid())
+  userId           String
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  score            Int
+  total            Int
+  level            String   // A1, A2, B1, B2
   grammarScore     Int?
   vocabularyScore  Int?
   correctionScore  Int?
-  strengths   String?  // JSON array
-  weaknesses  String?  // JSON array
-  createdAt   DateTime @default(now())
+  strengths        String?  // JSON array
+  weaknesses       String?  // JSON array
+  createdAt        DateTime @default(now())
 }
 
 model StudyPlan {
@@ -58,6 +60,56 @@ model StudyPlanDay {
   dataJson  String   // JSON: focus, tasks, estimated_minutes, type blocks
   status    String   @default("pending") // pending, done, skipped
   notes     String?
+  tasks     StudyTask[]
+}
+
+model StudyTask {
+  id          String   @id @default(cuid())
+  dayId       String
+  day         StudyPlanDay @relation(fields: [dayId], references: [id], onDelete: Cascade)
+  type        String   // vocabulary, grammar, correction, reading, listening
+  title       String
+  contentJson String   // JSON: words, lesson content, exercises, audio, etc.
+  orderIndex  Int
+  status      String   @default("pending") // pending, completed
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model VocabularyWord {
+  id          String   @id @default(cuid())
+  word        String
+  translation String
+  example     String?
+  level       String?  // A1, A2, B1...
+  topic       String?  // travel, work, food, etc.
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  userWords   UserVocabulary[]
+}
+
+model UserVocabulary {
+  id          String   @id @default(cuid())
+  userId      String
+  wordId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  word        VocabularyWord @relation(fields: [wordId], references: [id], onDelete: Cascade)
+  lessonDay   Int?
+  status      String   @default("new") // new, learning, mastered
+  reviewCount Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model GrammarLesson {
+  id           String   @id @default(cuid())
+  title        String
+  explanation  String
+  examplesJson String   // JSON array of examples
+  level        String?  // A1, A2, B1...
+  topic        String?  // Present Simple, Articles, etc.
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model TrainingSession {

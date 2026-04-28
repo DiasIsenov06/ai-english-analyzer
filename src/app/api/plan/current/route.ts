@@ -1,42 +1,37 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { getTokenFromRequest, verifyToken } from "@/lib/auth";
 
 export async function GET(request: Request) {
   try {
-    const token = getTokenFromRequest(request);
-    if (!token) {
-      return NextResponse.json({ error: "Не авторизован" }, { status: 401 });
-    }
-    const payload = await verifyToken(token);
-    if (!payload) {
+    const { searchParams } = new URL(request.url);
+    const userId = searchParams.get("userId");
+
+    if (!userId) {
       return NextResponse.json(
-        { error: "Недействительный токен" },
-        { status: 401 }
+        { error: "userId is required" },
+        { status: 400 }
       );
     }
 
     const plan = await prisma.studyPlan.findFirst({
-      where: { userId: payload.userId },
+      where: { userId },
       orderBy: { createdAt: "desc" },
+      include: {
+        days: {
+          orderBy: {
+            dayIndex: "asc",
+          },
+        },
+      },
     });
 
-    if (!plan) {
-      return NextResponse.json({ plan: null, days: [] });
-    }
-
-    const days = await prisma.studyPlanDay.findMany({
-      where: { planId: plan.id },
-      orderBy: { dayIndex: "asc" },
-    });
-
-    return NextResponse.json({ plan, days });
+    return NextResponse.json({ plan });
   } catch (e) {
-    console.error(e);
+    console.error("Load current plan error:", e);
+
     return NextResponse.json(
-      { error: "Ошибка загрузки плана" },
+      { error: "Failed to load current plan" },
       { status: 500 }
     );
   }
 }
-

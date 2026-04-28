@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import ProtectedRoute from "@/components/ProtectedRoute";
 
 type Result = {
@@ -45,18 +46,46 @@ function ResultContent() {
     );
   }
 
+  const mascotMessage =
+    result.level === "A1"
+      ? "Бастамасы жақсы! Бірге өсеміз 🚀"
+      : result.level === "A2"
+      ? "Жақсы progress бар! Алға жалғастырайық 🌟"
+      : result.level === "B1"
+      ? "Жақсы деңгей! Тағы сәл қалды 🔥"
+      : "Керемет нәтиже! 🎉";
+
   return (
-    <div className="min-h-[calc(100vh-5rem)] px-4 py-12">
+    <div className="min-h-[calc(100vh-5rem)] bg-gradient-to-b from-slate-50 to-white px-4 py-12">
       <div className="max-w-2xl mx-auto">
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
-          <h1 className="text-2xl font-bold text-center mb-8">Результат AI-диагностики</h1>
+        <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-8">
+          <div className="flex flex-col items-center mb-6">
+            <div className="relative w-24 h-24 mb-3">
+              <Image
+                src="/images/mascot-result.png"
+                alt="Aqyldy_barys result mascot"
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
+
+            <p className="text-sm md:text-base text-gray-600 font-medium text-center">
+              {mascotMessage}
+            </p>
+          </div>
+
+          <h1 className="text-2xl font-bold text-center mb-8">
+            Результат AI-диагностики
+          </h1>
 
           <div className="text-center mb-8">
             <p className="text-5xl font-extrabold bg-gradient-to-r from-accent-start to-accent-end bg-clip-text text-transparent">
               {result.score}/{result.total}
             </p>
             <p className="text-xl font-semibold mt-2 text-gray-700">
-              Ваш уровень: <span className="text-accent-start">{result.level}</span>
+              Ваш уровень:{" "}
+              <span className="text-accent-start">{result.level}</span>
             </p>
           </div>
 
@@ -77,7 +106,9 @@ function ResultContent() {
 
           {result.strengths.length > 0 && (
             <div className="mb-6">
-              <h3 className="font-semibold text-green-700 mb-2">✓ Сильные стороны</h3>
+              <h3 className="font-semibold text-green-700 mb-2">
+                ✓ Сильные стороны
+              </h3>
               <ul className="list-disc list-inside text-gray-600 space-y-1">
                 {result.strengths.map((s) => (
                   <li key={s}>{s}</li>
@@ -88,7 +119,9 @@ function ResultContent() {
 
           {result.weaknesses.length > 0 && (
             <div className="mb-8">
-              <h3 className="font-semibold text-amber-700 mb-2">⚠ Слабые стороны</h3>
+              <h3 className="font-semibold text-amber-700 mb-2">
+                ⚠ Слабые стороны
+              </h3>
               <ul className="list-disc list-inside text-gray-600 space-y-1">
                 {result.weaknesses.map((w) => (
                   <li key={w}>{w}</li>
