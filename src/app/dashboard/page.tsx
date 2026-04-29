@@ -304,7 +304,7 @@ function DashboardContent() {
               Start Daily Training
             </Link>
             <Link
-              href="/plan"
+              href="/daily-plan"
               className="px-5 py-3 border border-gray-200 text-gray-800 rounded-xl font-semibold hover:bg-gray-50 hover:-translate-y-0.5 transition-all"
             >
               View Learning Plan

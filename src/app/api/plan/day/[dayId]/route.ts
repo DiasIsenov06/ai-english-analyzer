@@ -1,56 +1,118 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { getTokenFromRequest, verifyToken } from "@/lib/auth";
 
 type Params = { dayId: string };
 
-export async function PATCH(
+export async function GET(
   request: Request,
   { params }: { params: Params }
 ) {
   try {
-    const token = getTokenFromRequest(request);
-    if (!token) {
-      return NextResponse.json({ error: "Не авторизован" }, { status: 401 });
-    }
-    const payload = await verifyToken(token);
-    if (!payload) {
+    const { searchParams } = new URL(request.url);
+    const userId = searchParams.get("userId");
+    const dayIndex = Number(params.dayId);
+
+    if (!userId) {
       return NextResponse.json(
-        { error: "Недействительный токен" },
-        { status: 401 }
+        { error: "userId is required" },
+        { status: 400 }
       );
     }
 
-    const body = await request.json();
-    const { status, notes } = body as {
-      status?: string;
-      notes?: string;
-    };
-
-    const day = await prisma.studyPlanDay.findUnique({
-      where: { id: params.dayId },
-      include: { plan: true },
-    });
-
-    if (!day || day.plan.userId !== payload.userId) {
-      return NextResponse.json({ error: "Не найдено" }, { status: 404 });
+    if (Number.isNaN(dayIndex)) {
+      return NextResponse.json(
+        { error: "Invalid dayId" },
+        { status: 400 }
+      );
     }
 
-    const updated = await prisma.studyPlanDay.update({
-      where: { id: params.dayId },
-      data: {
-        status: status ?? day.status,
-        notes: notes ?? day.notes,
+    const plan = await prisma.studyPlan.findFirst({
+      where: {
+        userId,
+        metaJson: {
+          contains: "simple-logic-generator",
+        },
+      },
+      orderBy: { createdAt: "desc" },
+    });
+
+    if (!plan) {
+      return NextResponse.json(
+        { error: "Plan not found" },
+        { status: 404 }
+      );
+    }
+
+    const day = await prisma.studyPlanDay.findFirst({
+      where: {
+        planId: plan.id,
+        dayIndex,
+      },
+      include: {
+        tasks: {
+          orderBy: {
+            orderIndex: "asc",
+          },
+        },
       },
     });
 
-    return NextResponse.json(updated);
+    if (!day) {
+      return NextResponse.json(
+        { error: "Day not found" },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({ day });
   } catch (e) {
-    console.error(e);
+    console.error("Load day lesson error:", e);
+
     return NextResponse.json(
-      { error: "Ошибка обновления дня плана" },
+      { error: "Failed to load day lesson" },
       { status: 500 }
     );
   }
 }
 
+export async function PATCH(request: Request) {
+  try {
+    const { dayId, status, notes } = await request.json();
+
+    if (!dayId || !status) {
+      return NextResponse.json(
+        { error: "dayId and status are required" },
+        { status: 400 }
+      );
+    }
+
+    const updatedDay = await prisma.studyPlanDay.update({
+      where: { id: dayId },
+      data: {
+        status,
+        notes: notes ?? undefined,
+      },
+    });
+
+    if (status === "completed") {
+      await prisma.studyTask.updateMany({
+        where: { dayId },
+        data: {
+          status: "completed",
+        },
+      });
+    }
+
+    return NextResponse.json({
+      ok: true,
+      day: updatedDay,
+    });
+  } catch (e) {
+    console.error("Update day lesson error:", e);
+
+    return NextResponse.json(
+      { error: "Failed to update day lesson" },
+      { status: 500 }
+    );
+  }
+}
