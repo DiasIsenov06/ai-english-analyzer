@@ -136,15 +136,17 @@ resource "aws_db_instance" "postgres" {
   parameter_group_name   = aws_db_parameter_group.postgres.name
 
   # Backup
-  backup_retention_period   = 7    # 7 күн бэкап
-  backup_window             = "03:00-04:00" # UTC 3:00 — трафик аз уақыт
+  # Free Tier: backup_retention_period тек 0 болуы мүмкін (бэкап өшірулі)
+  # Paid account болса: 1-35 аралығына қой
+  backup_retention_period   = 0
+  # backup_window           = "03:00-04:00"  # retention > 0 болса ашу керек
   maintenance_window        = "sun:04:00-sun:05:00"
-  delete_automated_backups  = false
+  delete_automated_backups  = true
 
   # Lifecycle
-  skip_final_snapshot       = false
-  final_snapshot_identifier = "ai-english-db-final-snapshot"
-  deletion_protection       = false # Продакшнда true болу керек
+  skip_final_snapshot       = true   # Free Tier-де snapshot да шектелген
+  # final_snapshot_identifier = "ai-english-db-final-snapshot"  # paid-да қос
+  deletion_protection       = false
 
   tags = { Name = "ai-english-postgres" }
 }
