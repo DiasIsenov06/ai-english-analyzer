@@ -92,7 +92,7 @@ resource "aws_db_subnet_group" "main" {
 # ── RDS Parameter Group ──────────────────────────────────────
 # PostgreSQL-ды Prisma үшін баптау
 resource "aws_db_parameter_group" "postgres" {
-  name   = "ai-english-postgres16"
+  name   = "ai-english-pg16"
   family = "postgres16"
 
   parameter {
@@ -112,7 +112,7 @@ resource "aws_db_instance" "postgres" {
 
   # Engine
   engine         = "postgres"
-  engine_version = "16.3"
+  engine_version = "16"   # AWS автоматты соңғы minor version таңдайды (16.x)
   instance_class = "db.t3.micro" # Free tier eligible
 
   # Storage
