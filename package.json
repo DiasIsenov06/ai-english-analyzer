@@ -9,7 +9,7 @@
     "lint": "next lint",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
-    "db:seed": "npx ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts",
+    "db:seed": "npx ts-node --project tsconfig.seed.json prisma/seed.ts",
     "db:studio": "prisma studio",
     "postinstall": "prisma generate"
   },
@@ -23,7 +23,7 @@
     "react-dom": "^18.2.0"
   },
   "prisma": {
-    "seed": "npx ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+    "seed": "npx ts-node --project tsconfig.seed.json prisma/seed.ts"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
