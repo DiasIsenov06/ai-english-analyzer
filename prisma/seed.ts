@@ -119,13 +119,11 @@ async function main() {
     { word: 'supplement', translation: 'толықтыру', example: 'These exercises supplement your learning.', level: 'B1', topic: 'Education' },
   ];
 
-  for (const word of vocabWords) {
-    await prisma.vocabularyWord.upsert({
-      where: { word: word.word },
-      update: {},
-      create: word,
-    });
-  }
+  // Бұрыннан бар сөздерді тазалап, қайта жасау
+  await prisma.vocabularyWord.deleteMany({
+    where: { word: { in: vocabWords.map(w => w.word) } },
+  });
+  await prisma.vocabularyWord.createMany({ data: vocabWords });
   console.log(`✓ ${vocabWords.length} сөздік сөз жасалды`);
 
   // --- 4. Грамматика сабақтары (GrammarLesson) ---
@@ -164,9 +162,10 @@ async function main() {
     },
   ];
 
-  for (const lesson of grammarLessons) {
-    await prisma.grammarLesson.create({ data: lesson });
-  }
+  await prisma.grammarLesson.deleteMany({
+    where: { title: { in: grammarLessons.map(l => l.title) } },
+  });
+  await prisma.grammarLesson.createMany({ data: grammarLessons });
   console.log(`✓ ${grammarLessons.length} грамматика сабағы жасалды`);
 
   console.log('\n✅ Дерекқор деректермен толтырылды!');
