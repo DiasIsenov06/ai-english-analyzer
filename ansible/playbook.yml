@@ -1,0 +1,250 @@
+---
+# AI English Analyzer — Ansible Playbook
+# Серверді автоматты баптайды
+# Қолданылуы: ansible-playbook -i ansible/inventory.ini ansible/playbook.yml
+
+- name: AI English Analyzer сервер баптауы
+  hosts: app_servers
+  become: true
+  vars:
+    app_dir: /opt/ai-english-analyzer
+    app_user: appuser
+    github_repo: https://github.com/DiasIsenov06/ai-english-analyzer.git
+    docker_compose_version: "2.24.0"
+
+  tasks:
+    # ==============================
+    # 1. ЖҮЙЕНІ ЖАҢАРТУ
+    # ==============================
+    - name: APT кэшін жаңарту
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Жүйе пакеттерін жаңарту
+      apt:
+        upgrade: dist
+        autoremove: yes
+
+    - name: Керекті пакеттерді орнату
+      apt:
+        name:
+          - git
+          - curl
+          - wget
+          - ufw
+          - fail2ban
+          - openssl
+          - ca-certificates
+          - gnupg
+          - lsb-release
+        state: present
+
+    # ==============================
+    # 2. ПАЙДАЛАНУШЫ ЖАСАУ
+    # ==============================
+    - name: "{{ app_user }} пайдаланушысын жасау"
+      user:
+        name: "{{ app_user }}"
+        groups:
+          - sudo
+          - docker
+        shell: /bin/bash
+        create_home: yes
+        state: present
+
+    - name: SSH каталогын жасау
+      file:
+        path: "/home/{{ app_user }}/.ssh"
+        state: directory
+        mode: '0700'
+        owner: "{{ app_user }}"
+        group: "{{ app_user }}"
+
+    # ==============================
+    # 3. UFW FIREWALL
+    # ==============================
+    - name: UFW — барлық кіріс трафикті бұғаттау
+      ufw:
+        default: deny
+        direction: incoming
+
+    - name: UFW — барлық шығыс трафикке рұқсат
+      ufw:
+        default: allow
+        direction: outgoing
+
+    - name: UFW — SSH рұқсат
+      ufw:
+        rule: allow
+        port: "22"
+        proto: tcp
+
+    - name: UFW — HTTP рұқсат
+      ufw:
+        rule: allow
+        port: "80"
+        proto: tcp
+
+    - name: UFW — HTTPS рұқсат
+      ufw:
+        rule: allow
+        port: "443"
+        proto: tcp
+
+    - name: UFW — Grafana рұқсат
+      ufw:
+        rule: allow
+        port: "3001"
+        proto: tcp
+
+    - name: UFW — Jenkins рұқсат
+      ufw:
+        rule: allow
+        port: "8080"
+        proto: tcp
+
+    - name: UFW іске қосу
+      ufw:
+        state: enabled
+
+    # ==============================
+    # 4. FAIL2BAN
+    # ==============================
+    - name: Fail2Ban конфигурациясы
+      copy:
+        dest: /etc/fail2ban/jail.local
+        content: |
+          [DEFAULT]
+          bantime  = 3600
+          findtime = 600
+          maxretry = 5
+
+          [sshd]
+          enabled  = true
+          port     = ssh
+          maxretry = 3
+          bantime  = 7200
+
+          [nginx-http-auth]
+          enabled  = true
+          port     = http,https
+          logpath  = /var/log/nginx/error.log
+          maxretry = 5
+        mode: '0644'
+
+    - name: Fail2Ban іске қосу
+      service:
+        name: fail2ban
+        state: started
+        enabled: yes
+
+    # ==============================
+    # 5. DOCKER ОРНАТУ
+    # ==============================
+    - name: Docker GPG кілтін қосу
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Docker репозиторийін қосу
+      apt_repository:
+        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+        state: present
+
+    - name: Docker орнату
+      apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-compose-plugin
+        state: present
+        update_cache: yes
+
+    - name: Docker сервисін іске қосу
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: "{{ app_user }} пайдаланушысын docker тобына қосу"
+      user:
+        name: "{{ app_user }}"
+        groups: docker
+        append: yes
+
+    # ==============================
+    # 6. ЖОБА ФАЙЛДАРЫН ОРНАЛАСТЫРУ
+    # ==============================
+    - name: Жоба каталогын жасау
+      file:
+        path: "{{ app_dir }}"
+        state: directory
+        owner: "{{ app_user }}"
+        group: "{{ app_user }}"
+        mode: '0755'
+
+    - name: GitHub-тан жобаны тарту
+      git:
+        repo: "{{ github_repo }}"
+        dest: "{{ app_dir }}"
+        version: main
+        force: yes
+      become_user: "{{ app_user }}"
+
+    - name: .env файлын жасау
+      template:
+        src: env.j2
+        dest: "{{ app_dir }}/.env"
+        owner: "{{ app_user }}"
+        group: "{{ app_user }}"
+        mode: '0600'
+
+    # ==============================
+    # 7. SSL СЕРТИФИКАТ
+    # ==============================
+    - name: SSL каталогын жасау
+      file:
+        path: "{{ app_dir }}/nginx/ssl"
+        state: directory
+        mode: '0755'
+
+    - name: Self-signed SSL сертификат жасау
+      command: >
+        openssl req -x509 -nodes -days 365 -newkey rsa:2048
+        -keyout {{ app_dir }}/nginx/ssl/key.pem
+        -out {{ app_dir }}/nginx/ssl/cert.pem
+        -subj "/C=KZ/ST=Astana/L=Astana/O=AI English/CN=localhost"
+      args:
+        creates: "{{ app_dir }}/nginx/ssl/cert.pem"
+
+    # ==============================
+    # 8. DOCKER COMPOSE ІСКЕ ҚОСУ
+    # ==============================
+    - name: Docker Compose іске қосу
+      community.docker.docker_compose_v2:
+        project_src: "{{ app_dir }}"
+        state: present
+        pull: always
+        build: always
+      become_user: "{{ app_user }}"
+
+    # ==============================
+    # 9. АВТОМАТТЫ САҚТЫҚ КӨШІРМЕ (cron)
+    # ==============================
+    - name: Күнделікті сақтық көшірме cron жасау
+      cron:
+        name: "AI English DB backup"
+        minute: "0"
+        hour: "3"
+        job: "bash {{ app_dir }}/scripts/backup.sh backup >> /var/log/ai-backup.log 2>&1"
+        user: "{{ app_user }}"
+
+    - name: Баптау аяқталды
+      debug:
+        msg: |
+          ✅ Баптау аяқталды!
+          Қосымша: http://{{ ansible_host }}:3000
+          Grafana:  http://{{ ansible_host }}:3001
+          Jenkins:  http://{{ ansible_host }}:8080

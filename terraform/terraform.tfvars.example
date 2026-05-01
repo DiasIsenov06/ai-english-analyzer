@@ -1,0 +1,20 @@
+# terraform.tfvars.example
+# Осы файлды terraform.tfvars деп көшіріп, мәндерді толтырыңыз
+# НАЗАР: terraform.tfvars .gitignore-ге қосылған (құпиялар)
+
+project_name      = "ai-english-analyzer"
+environment       = "prod"
+region            = "eu-central-1"
+app_instance_type = "t3.small"
+domain_name       = "aienglish.yourdomain.com"
+
+# Құпиялар — міндетті түрде өзгерту!
+db_password    = "CHANGE-THIS-STRONG-PASSWORD"
+jwt_secret     = "CHANGE-THIS-JWT-SECRET-MIN-32-CHARS"
+gemini_api_key = "YOUR-GEMINI-API-KEY"
+
+# SSH кілт (опционалды)
+ssh_public_key = ""
+
+# SSH кіруге рұқсат IP (тек өз IP-ні қойыңыз)
+allowed_ssh_cidr = ["0.0.0.0/0"]

@@ -1,0 +1,41 @@
+global:
+  resolve_timeout: 5m
+
+# Telegram Bot хабарландыру маршруты
+route:
+  group_by: ['alertname', 'severity']
+  group_wait: 10s
+  group_interval: 5m
+  repeat_interval: 3h
+  receiver: 'telegram-bot'
+
+  routes:
+    # Critical ескертулер — бірден жіберу
+    - match:
+        severity: critical
+      receiver: 'telegram-bot'
+      group_wait: 0s
+      repeat_interval: 30m
+
+    # Warning ескертулер — топтап жіберу
+    - match:
+        severity: warning
+      receiver: 'telegram-bot'
+      group_wait: 30s
+      repeat_interval: 4h
+
+receivers:
+  - name: 'telegram-bot'
+    webhook_configs:
+      - url: 'http://telegram-alert-bot:8080/alert'
+        send_resolved: true
+        http_config:
+          follow_redirects: true
+
+# Бастапқы ескертулерді басу (мысалы, техникалық жұмыс кезінде)
+inhibit_rules:
+  - source_match:
+      severity: 'critical'
+    target_match:
+      severity: 'warning'
+    equal: ['alertname', 'instance']

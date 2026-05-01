@@ -36,3 +36,20 @@ next-env.d.ts
 # prisma
 prisma/dev.db
 prisma/dev.db-journal
+
+# terraform (құпиялар)
+terraform/terraform.tfvars
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.backup
+terraform/.terraform.lock.hcl
+
+# backups
+backups/
+
+# nginx ssl
+nginx/ssl/
+
+# local
+*.pem
+*.key

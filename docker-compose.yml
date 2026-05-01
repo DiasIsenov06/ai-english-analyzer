@@ -1,6 +1,9 @@
 name: ai-english-analyzer
 
 services:
+  # ============================================
+  # ДЕРЕКҚОР — PostgreSQL
+  # ============================================
   db:
     image: postgres:16-alpine
     container_name: ai-english-db
@@ -18,7 +21,12 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    networks:
+      - app-network
 
+  # ============================================
+  # ҚОСЫМША — Next.js (AI English Analyzer)
+  # ============================================
   app:
     build: .
     container_name: ai-english-app
@@ -35,6 +43,132 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    networks:
+      - app-network
+
+  # ============================================
+  # NGINX — Reverse Proxy + SSL
+  # ============================================
+  nginx:
+    image: nginx:alpine
+    container_name: ai-english-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+      - nginx_logs:/var/log/nginx
+    depends_on:
+      - app
+    networks:
+      - app-network
+
+  # ============================================
+  # МОНИТОРИНГ — Prometheus (метрика жинау)
+  # ============================================
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: ai-english-prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./monitoring/alert-rules.yml:/etc/prometheus/alert-rules.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=30d'
+      - '--web.enable-lifecycle'
+    networks:
+      - app-network
+
+  # ============================================
+  # МОНИТОРИНГ — Node Exporter (сервер метрикасы)
+  # ============================================
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: ai-english-node-exporter
+    restart: unless-stopped
+    ports:
+      - "9100:9100"
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    networks:
+      - app-network
+
+  # ============================================
+  # МОНИТОРИНГ — Alertmanager (Telegram хабарландыру)
+  # ============================================
+  alertmanager:
+    image: prom/alertmanager:latest
+    container_name: ai-english-alertmanager
+    restart: unless-stopped
+    ports:
+      - "9093:9093"
+    volumes:
+      - ./monitoring/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+    networks:
+      - app-network
+
+  # ============================================
+  # ВИЗУАЛИЗАЦИЯ — Grafana
+  # ============================================
+  grafana:
+    image: grafana/grafana:latest
+    container_name: ai-english-grafana
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-admin123}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_SERVER_ROOT_URL: "%(protocol)s://%(domain)s:%(http_port)s/grafana"
+      GF_SERVER_SERVE_FROM_SUB_PATH: "true"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+    depends_on:
+      - prometheus
+    networks:
+      - app-network
+
+  # ============================================
+  # CI/CD — Jenkins
+  # ============================================
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: ai-english-jenkins
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_data:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      JAVA_OPTS: "-Djenkins.install.runSetupWizard=false"
+    networks:
+      - app-network
 
 volumes:
   postgres_data:
+  prometheus_data:
+  grafana_data:
+  jenkins_data:
+  nginx_logs:
+
+networks:
+  app-network:
+    driver: bridge

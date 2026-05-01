@@ -1,0 +1,92 @@
+groups:
+  # ==============================
+  # СЕРВЕР РЕСУРСТАРЫ ескертулері
+  # ==============================
+  - name: server_alerts
+    rules:
+      # CPU жоғары жүктелгенде
+      - alert: HighCPUUsage
+        expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 85
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "CPU жоғары жүктелген ({{ $labels.instance }})"
+          description: "CPU пайдаланылуы {{ $value | printf \"%.1f\" }}% — 85% шегінен жоғары."
+
+      - alert: CriticalCPUUsage
+        expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 95
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "КРИТИКАЛЫҚ: CPU 95%+ ({{ $labels.instance }})"
+          description: "CPU {{ $value | printf \"%.1f\" }}% — жедел тексеру қажет!"
+
+      # RAM тапшылығы
+      - alert: HighMemoryUsage
+        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 85
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "RAM жоғары пайдаланылуы ({{ $labels.instance }})"
+          description: "RAM пайдаланылуы {{ $value | printf \"%.1f\" }}%."
+
+      # Диск тапшылығы
+      - alert: LowDiskSpace
+        expr: (node_filesystem_avail_bytes{fstype!="tmpfs"} / node_filesystem_size_bytes{fstype!="tmpfs"}) * 100 < 15
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Диск орны аз ({{ $labels.instance }})"
+          description: "Диск бос орны {{ $value | printf \"%.1f\" }}% — 15% шегінен төмен."
+
+      - alert: CriticalDiskSpace
+        expr: (node_filesystem_avail_bytes{fstype!="tmpfs"} / node_filesystem_size_bytes{fstype!="tmpfs"}) * 100 < 5
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "КРИТИКАЛЫҚ: Диск орны 5%! ({{ $labels.instance }})"
+          description: "Диск бос орны {{ $value | printf \"%.1f\" }}% — жедел тазалау қажет!"
+
+  # ==============================
+  # ҚОСЫМША ескертулері
+  # ==============================
+  - name: app_alerts
+    rules:
+      # Қосымша қолжетімсіз
+      - alert: AppDown
+        expr: up{job="app"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "AI English Analyzer қолжетімсіз!"
+          description: "Next.js қосымшасы 1 минуттан бері жауап бермейді."
+
+      # Prometheus жоғалса
+      - alert: PrometheusDown
+        expr: up{job="prometheus"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Prometheus жоғалды!"
+          description: "Мониторинг жүйесі жауап бермейді."
+
+  # ==============================
+  # ДЕРЕКҚОР ескертулері
+  # ==============================
+  - name: database_alerts
+    rules:
+      - alert: PostgreSQLDown
+        expr: up{job="postgres"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "PostgreSQL дерекқоры қолжетімсіз!"
+          description: "Дерекқор 1 минуттан бері жауап бермейді."
