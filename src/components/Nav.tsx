@@ -62,6 +62,20 @@ export default function Nav() {
               >
                 Тест
               </Link>
+              <Link
+                href="/vocabulary"
+                className={`block py-2 ${pathname === "/vocabulary" ? "text-accent-start font-semibold" : "text-gray-600 hover:text-accent-start"}`}
+                onClick={() => setOpen(false)}
+              >
+                📚 Сөздік
+              </Link>
+              <Link
+                href="/profile"
+                className={`block py-2 ${pathname === "/profile" ? "text-accent-start font-semibold" : "text-gray-600 hover:text-accent-start"}`}
+                onClick={() => setOpen(false)}
+              >
+                👤 Профиль
+              </Link>
               <button
                 onClick={() => { logout(); setOpen(false); }}
                 className="block py-2 text-gray-600 hover:text-red-500"
