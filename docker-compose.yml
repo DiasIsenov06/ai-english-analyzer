@@ -145,6 +145,22 @@ services:
       - app-network
 
   # ============================================
+  # TELEGRAM ALERT BOT — Alertmanager webhook
+  # ============================================
+  telegram-alert-bot:
+    build: ./monitoring/telegram-bot
+    container_name: ai-english-telegram-bot
+    restart: unless-stopped
+    ports:
+      - "8090:8080"
+    environment:
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
+      TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID:-}
+      PORT: 8080
+    networks:
+      - app-network
+
+  # ============================================
   # CI/CD — Jenkins
   # ============================================
   jenkins:
