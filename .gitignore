@@ -39,10 +39,10 @@ prisma/dev.db-journal
 
 # terraform (құпиялар)
 terraform/terraform.tfvars
-terraform/.terraform/
-terraform/*.tfstate
-terraform/*.tfstate.backup
-terraform/.terraform.lock.hcl
+terraform/**/.terraform/
+terraform/**/*.tfstate
+terraform/**/*.tfstate.backup
+terraform/**/.terraform.lock.hcl
 
 # backups
 backups/
