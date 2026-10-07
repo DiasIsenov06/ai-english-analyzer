@@ -1,0 +1,15 @@
+story_id,title,release,accepted,story_points,lab4_hours,reduced_scope
+AEA-US-01,Тіркелу,MVP,False,3,4,True
+AEA-US-02,Жүйеге кіру,MVP,False,3,4,True
+AEA-US-03,Деңгей тестін орындау,MVP,False,5,6,True
+AEA-US-04,Нәтиже мен әлсіз дағдылар,MVP,False,3,4,True
+AEA-US-05,Тест нәтижелерінің тарихы,MVP,False,3,3,True
+AEA-US-06,Оқу мақсатын белгілеу,MVP,False,3,3,True
+AEA-US-07,28 күндік жоспар құру,MVP,False,8,8,True
+AEA-US-08,Резервтік жоспар алу,MVP,False,5,5,True
+AEA-US-09,Күнделікті тапсырмаларды көру,MVP,False,3,4,True
+AEA-US-10,Тапсырма орындалуын белгілеу,MVP,False,3,4,True
+AEA-US-11,Сөздік карточкаларымен оқу,MVP,False,3,4,False
+AEA-US-12,Жаттығу сессиясын бастау,MVP,False,5,4,False
+AEA-US-13,Жаттығуда жауап алмасу,MVP,False,8,6,False
+AEA-US-14,Жеке прогресті көру,MVP,False,5,5,True

@@ -1,0 +1,87 @@
+{
+  "start_date": "2026-10-07",
+  "seed": 42,
+  "runs": 10000,
+  "base_commit": "8c22a47e8ba3dba4e5f5a921482dcb9a6c58efd2",
+  "data_kind": "methodology_example_not_project_history",
+  "stats": {
+    "weeks": 26,
+    "sum": 124,
+    "mean": 4.769230769230769,
+    "median": 5.0,
+    "min": 0,
+    "max": 9,
+    "zero_weeks": 2
+  },
+  "backlog": 14,
+  "story_points": 60,
+  "results": [
+    {
+      "level": "P50",
+      "weeks": 3,
+      "date": "2026-10-28",
+      "empirical_probability": 0.59
+    },
+    {
+      "level": "P70",
+      "weeks": 4,
+      "date": "2026-11-04",
+      "empirical_probability": 0.8805
+    },
+    {
+      "level": "P85",
+      "weeks": 4,
+      "date": "2026-11-04",
+      "empirical_probability": 0.8805
+    },
+    {
+      "level": "P95",
+      "weeks": 5,
+      "date": "2026-11-11",
+      "empirical_probability": 0.9706
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario": "Негізгі",
+      "N": 14,
+      "probability_by_3_weeks": 0.59,
+      "probability_by_4_weeks": 0.8805,
+      "P50": 3,
+      "P70": 4,
+      "P85": 4,
+      "P95": 5
+    },
+    {
+      "scenario": "Қысқартылған",
+      "N": 11,
+      "probability_by_3_weeks": 0.8179,
+      "probability_by_4_weeks": 0.9603,
+      "P50": 3,
+      "P70": 3,
+      "P85": 4,
+      "P95": 4
+    },
+    {
+      "scenario": "Баяу стресс",
+      "N": 14,
+      "probability_by_3_weeks": 0.0,
+      "probability_by_4_weeks": 0.0105,
+      "P50": 7,
+      "P70": 7,
+      "P85": 8,
+      "P95": 9
+    },
+    {
+      "scenario": "Нөлдерсіз салыстыру",
+      "N": 14,
+      "probability_by_3_weeks": 0.7193,
+      "probability_by_4_weeks": 0.9615,
+      "P50": 3,
+      "P70": 3,
+      "P85": 4,
+      "P95": 4
+    }
+  ],
+  "next_review": "2026-10-14"
+}
