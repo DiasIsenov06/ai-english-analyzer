@@ -1,0 +1,48 @@
+{
+  "title": "AI English Analyzer — Lab 7 Security",
+  "repository": "DiasIsenov06/ai-english-analyzer",
+  "view": "Board",
+  "group_by": "Status",
+  "columns": [
+    "Todo",
+    "In Progress",
+    "Review",
+    "Done"
+  ],
+  "fields": {
+    "Due date": "Date",
+    "Priority": [
+      "P0",
+      "P1",
+      "P2"
+    ]
+  },
+  "creation_status": "pending_browser_access",
+  "project_url": null,
+  "items": [
+    {
+      "issue": 2,
+      "url": "https://github.com/DiasIsenov06/ai-english-analyzer/issues/2",
+      "status": "Todo",
+      "assignee": "Rasuul255",
+      "due_date": "2026-10-16",
+      "priority": "P0"
+    },
+    {
+      "issue": 3,
+      "url": "https://github.com/DiasIsenov06/ai-english-analyzer/issues/3",
+      "status": "Todo",
+      "assignee": "Rasuul255",
+      "due_date": "2026-10-18",
+      "priority": "P1"
+    },
+    {
+      "issue": 4,
+      "url": "https://github.com/DiasIsenov06/ai-english-analyzer/issues/4",
+      "status": "Todo",
+      "assignee": "Rasuul255",
+      "due_date": "2026-10-21",
+      "priority": "P1"
+    }
+  ]
+}

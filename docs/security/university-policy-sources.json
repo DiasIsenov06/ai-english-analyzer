@@ -1,0 +1,60 @@
+{
+  "index_url": "https://enu.kz/ru/page/university%2Fabout-us%2Ffundamental-documents",
+  "sources": [
+    {
+      "id": "UP01",
+      "title": "Академическая политика НАО «ЕНУ имени Л.Н. Гумилева»",
+      "year": 2025,
+      "edition": 3,
+      "code": "ПОЛ ЕНУ 1.57-КУ-25",
+      "sections": [
+        "23.3",
+        "25.1–25.6",
+        "26.1–26.2"
+      ],
+      "pages": [
+        23,
+        24
+      ],
+      "url": "https://smart.enu.kz/api/serve?path=/general/files/03c2011e-e137-4bd0-95e5-549cbde03a77.pdf",
+      "download_sha256": "e02df324b8e8f0e0833008d49e77414474db694574426e863289a258cf7340c7",
+      "checked_on": "2026-10-14",
+      "verification": "Official ENU index and linked document reviewed; not evidence of project-specific approval."
+    },
+    {
+      "id": "UP02",
+      "title": "Политика академической честности преподавателей, сотрудников, обучающихся НАО «ЕНУ им. Л.Н. Гумилева»",
+      "year": 2021,
+      "edition": 3,
+      "sections": [
+        "5",
+        "6"
+      ],
+      "pages": [
+        5,
+        6,
+        7
+      ],
+      "url": "https://enu.kz/v1/smartapi/download/45226754-6d47-4337-a833-b24765a25a55",
+      "download_sha256": "2472c31ec27377bc435f8c1015850a661944190854ed0f82b4faa6a8eba87377",
+      "checked_on": "2026-10-14",
+      "verification": "Official ENU index and linked document reviewed; not evidence of project-specific approval."
+    },
+    {
+      "id": "UP03",
+      "title": "Информационная политика НАО «ЕНУ имени Л.Н. Гумилева»",
+      "year": 2022,
+      "sections": [
+        "7.2(1)",
+        "7.2(3)"
+      ],
+      "pages": [
+        4
+      ],
+      "url": "https://enu.kz/v1/smartapi/download/3d347a16-9ef2-47a4-a505-17d6eb73ccd0",
+      "download_sha256": "7886640528e4578b8c09f4b7bf0380c4499b1e35b5d1227fefcab402e709a23c",
+      "checked_on": "2026-10-14",
+      "verification": "Official ENU index and linked document reviewed; not evidence of project-specific approval."
+    }
+  ]
+}
