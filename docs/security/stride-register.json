@@ -1,0 +1,74 @@
+[
+  {
+    "id": "S01",
+    "type": "Spoofing",
+    "title": "JWT fallback арқылы жалған сессия",
+    "description": "JWT_SECRET жоқ ортада auth.ts болжамды fallback қолданады. Құпия кілттің тірі ортада қолданылғаны белгісіз.",
+    "mitigation": "Fallback жою; startup validation; нақты қолданылған кілтті айналдыру; auth negative tests.",
+    "severity": "High",
+    "status": "Open",
+    "modelType": "STRIDE",
+    "risk": "R02",
+    "task": "SEC-01"
+  },
+  {
+    "id": "T01",
+    "type": "Tampering",
+    "title": "Бөгде жоспар күнін өзгерту",
+    "description": "PATCH plan/day body.dayId бойынша жаңартады; JWT мен дерек иесі тексерілмейді.",
+    "mitigation": "userId token-нен; owner шарты бар query; status enum және транзакция; екі пайдаланушының теріс тесті.",
+    "severity": "High",
+    "status": "Open",
+    "modelType": "STRIDE",
+    "risk": "R01",
+    "task": "SEC-01"
+  },
+  {
+    "id": "R01",
+    "type": "Repudiation",
+    "title": "Әрекеттің авторын дәлелдеу мүмкін емес",
+    "description": "Арнайы access/consent audit моделі көрінбейді; console.error толық аудиттің орнына жүрмейді.",
+    "mitigation": "Уақыт, actor pseudonym, action, resource ID, result, correlation ID; өзгертілмейтін сақтау; token/prompt-сыз журнал.",
+    "severity": "Medium",
+    "status": "Open",
+    "modelType": "STRIDE",
+    "risk": "R15",
+    "task": "SEC-03"
+  },
+  {
+    "id": "I01",
+    "type": "Information disclosure",
+    "title": "Жоспардың ашылуы және LLM-ге артық мәтін беру",
+    "description": "GET plan/current query.userId-ге сенеді. Training API сыртқы провайдерге соңғы 6 хабарлама мен ағымдағы мәтінді жібереді.",
+    "mitigation": "Owner guard; prompt минимизациясы; consent/беру негізі; ҚР сақтау дәлелі; backup шифрлау.",
+    "severity": "High",
+    "status": "Open",
+    "modelType": "STRIDE",
+    "risk": "R01, R04",
+    "task": "SEC-01 / SEC-03"
+  },
+  {
+    "id": "D01",
+    "type": "Denial of service",
+    "title": "Шектеусіз AI сұрауы ресурсты ұстайды",
+    "description": "Training message route-та timeout, per-user rate limit және message max length анықталмады.",
+    "mitigation": "Ұзындық шегі, per-user лимит, Abort timeout, квота және retry budget; жүктеме тесті.",
+    "severity": "Medium",
+    "status": "Open",
+    "modelType": "STRIDE",
+    "risk": "R08, R19",
+    "task": "SEC-03"
+  },
+  {
+    "id": "E01",
+    "type": "Elevation of privilege",
+    "title": "Басқа қолданушының дерегін басқару",
+    "description": "Plan және study-activity маршруттары клиент жіберген userId-ді өкілеттік ретінде қабылдайды. Docker процестерінде root default бар.",
+    "mitigation": "Object-level authorization және least privilege; контейнерге non-root USER; DB құқығын шектеу.",
+    "severity": "High",
+    "status": "Open",
+    "modelType": "STRIDE",
+    "risk": "R01, R12",
+    "task": "SEC-01 / SEC-02"
+  }
+]

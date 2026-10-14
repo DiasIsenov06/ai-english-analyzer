@@ -1,0 +1,10 @@
+{
+  "result": "PASS",
+  "schema": "https://raw.githubusercontent.com/OWASP/threat-dragon/main/td.vue/src/assets/schema/threat-dragon-v2.schema.json",
+  "validated_on": "2026-10-14",
+  "components": 4,
+  "flows": 3,
+  "trust_boundaries": 3,
+  "stride_categories": 6,
+  "ui_import_tested": false
+}

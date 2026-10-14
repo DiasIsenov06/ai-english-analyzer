@@ -1,0 +1,17 @@
+[
+  {
+    "RuleID": "telegram-bot-api-token",
+    "Description": "Detected a Telegram Bot API Token, risking unauthorized bot operations and message interception on Telegram.",
+    "StartLine": 19,
+    "EndLine": 19,
+    "Match": "TELEGRAM_BOT_TOKEN=\"REDACTED\"",
+    "Secret": "REDACTED",
+    "File": ".env.example",
+    "Commit": "9f169fdde689af7c925782f2c564b6bf8620ab68",
+    "Fingerprint": "9f169fdde689af7c925782f2c564b6bf8620ab68:.env.example:telegram-bot-api-token:19",
+    "triage": "Үлгі мән: сандық placeholder және қайталанатын x таңбалары; шынайы кілт екені расталмады. Провайдерге сұрау жіберілген жоқ.",
+    "action": "Үлгіні бос мәнге ауыстыру; history finding сақталады; жаңа кілт табылса бөлек triage.",
+    "raid": "I05",
+    "task": "SEC-02"
+  }
+]

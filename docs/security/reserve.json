@@ -1,0 +1,12 @@
+{
+  "risk_reserve_hours": 38.4,
+  "lab5_reserve_hours": 19.8,
+  "difference_hours": 18.6,
+  "management_reserve_proposal_hours": 6,
+  "available_hours": 132,
+  "baseline_work_hours": 110,
+  "total_proposed_hours": 154.4,
+  "capacity_gap_hours": 22.4,
+  "risk_owner": "Ақжан Расуул",
+  "management_controller": "Спонсор/пән оқытушысы: аты және шешімі бекітілуі тиіс; әзірлеуші өздігінен жұмсамайды."
+}

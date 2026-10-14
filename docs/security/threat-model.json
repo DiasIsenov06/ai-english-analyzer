@@ -1,0 +1,419 @@
+{
+  "version": "2.0",
+  "summary": {
+    "title": "AI English Analyzer — API дерек ағыны",
+    "owner": "Ақжан Расуул",
+    "description": "ЛЗ7. Plan/Training компоненті; 6 STRIDE санаты. Барлығы Open; backend авторизациясының кейбір маршруты қорғалмаған. TLS және at-rest encryption deployment-де расталмаған.",
+    "id": "0270def5-23b9-5441-932a-a59d21f5a3d0"
+  },
+  "detail": {
+    "contributors": [
+      {
+        "name": "Ақжан Расуул"
+      }
+    ],
+    "diagrams": [
+      {
+        "version": "2.0",
+        "title": "API / DB / External AI",
+        "diagramType": "STRIDE",
+        "id": 0,
+        "description": "Логикалық шекаралар; техникалық желі шекарасы деп қабылдамау.",
+        "cells": [
+          {
+            "id": "9cf2609a-3a0c-5f01-bfc9-647ea689d786",
+            "shape": "actor",
+            "zIndex": 2,
+            "position": {
+              "x": 35,
+              "y": 130
+            },
+            "size": {
+              "width": 180,
+              "height": 85
+            },
+            "attrs": {
+              "text": {
+                "text": "Пайдаланушы / браузер"
+              }
+            },
+            "data": {
+              "type": "tm.Actor",
+              "name": "Пайдаланушы / браузер",
+              "description": "Код бойынша 14.10.2026 snapshot; controls жоспарланған болса Mitigated деп белгіленбейді.",
+              "isTrustBoundary": false,
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "hasOpenThreats": false,
+              "threats": []
+            }
+          },
+          {
+            "id": "4901eb43-116b-52ab-9db0-d2491b48b376",
+            "shape": "process",
+            "zIndex": 2,
+            "position": {
+              "x": 345,
+              "y": 110
+            },
+            "size": {
+              "width": 180,
+              "height": 130
+            },
+            "attrs": {
+              "text": {
+                "text": "Next.js API\nPlan / Training"
+              }
+            },
+            "data": {
+              "type": "tm.Process",
+              "name": "Next.js API\nPlan / Training",
+              "description": "Код бойынша 14.10.2026 snapshot; controls жоспарланған болса Mitigated деп белгіленбейді.",
+              "isTrustBoundary": false,
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "hasOpenThreats": true,
+              "threats": [
+                {
+                  "id": "911badb3-fb26-546f-b96f-33d25829383d",
+                  "type": "Spoofing",
+                  "title": "JWT fallback арқылы жалған сессия",
+                  "description": "JWT_SECRET жоқ ортада auth.ts болжамды fallback қолданады. Құпия кілттің тірі ортада қолданылғаны белгісіз. RAID: R02; SEC-01.",
+                  "mitigation": "Fallback жою; startup validation; нақты қолданылған кілтті айналдыру; auth negative tests.",
+                  "severity": "High",
+                  "status": "Open",
+                  "modelType": "STRIDE"
+                },
+                {
+                  "id": "bf093375-8c81-5fea-994f-77af4d0957d2",
+                  "type": "Tampering",
+                  "title": "Бөгде жоспар күнін өзгерту",
+                  "description": "PATCH plan/day body.dayId бойынша жаңартады; JWT мен дерек иесі тексерілмейді. RAID: R01; SEC-01.",
+                  "mitigation": "userId token-нен; owner шарты бар query; status enum және транзакция; екі пайдаланушының теріс тесті.",
+                  "severity": "High",
+                  "status": "Open",
+                  "modelType": "STRIDE"
+                },
+                {
+                  "id": "db773cf8-c37c-5c66-b5b7-1fc4bb1a4129",
+                  "type": "Repudiation",
+                  "title": "Әрекеттің авторын дәлелдеу мүмкін емес",
+                  "description": "Арнайы access/consent audit моделі көрінбейді; console.error толық аудиттің орнына жүрмейді. RAID: R15; SEC-03.",
+                  "mitigation": "Уақыт, actor pseudonym, action, resource ID, result, correlation ID; өзгертілмейтін сақтау; token/prompt-сыз журнал.",
+                  "severity": "Medium",
+                  "status": "Open",
+                  "modelType": "STRIDE"
+                },
+                {
+                  "id": "25fec6dc-b042-551a-a2b8-d1984281b438",
+                  "type": "Information disclosure",
+                  "title": "Жоспардың ашылуы және LLM-ге артық мәтін беру",
+                  "description": "GET plan/current query.userId-ге сенеді. Training API сыртқы провайдерге соңғы 6 хабарлама мен ағымдағы мәтінді жібереді. RAID: R01, R04; SEC-01 / SEC-03.",
+                  "mitigation": "Owner guard; prompt минимизациясы; consent/беру негізі; ҚР сақтау дәлелі; backup шифрлау.",
+                  "severity": "High",
+                  "status": "Open",
+                  "modelType": "STRIDE"
+                },
+                {
+                  "id": "f3bce64e-07b0-5dca-b378-1e0eb6bba818",
+                  "type": "Denial of service",
+                  "title": "Шектеусіз AI сұрауы ресурсты ұстайды",
+                  "description": "Training message route-та timeout, per-user rate limit және message max length анықталмады. RAID: R08, R19; SEC-03.",
+                  "mitigation": "Ұзындық шегі, per-user лимит, Abort timeout, квота және retry budget; жүктеме тесті.",
+                  "severity": "Medium",
+                  "status": "Open",
+                  "modelType": "STRIDE"
+                },
+                {
+                  "id": "73ea2fe9-8e87-5845-95a9-97259a82089c",
+                  "type": "Elevation of privilege",
+                  "title": "Басқа қолданушының дерегін басқару",
+                  "description": "Plan және study-activity маршруттары клиент жіберген userId-ді өкілеттік ретінде қабылдайды. Docker процестерінде root default бар. RAID: R01, R12; SEC-01 / SEC-02.",
+                  "mitigation": "Object-level authorization және least privilege; контейнерге non-root USER; DB құқығын шектеу.",
+                  "severity": "High",
+                  "status": "Open",
+                  "modelType": "STRIDE"
+                }
+              ],
+              "isWebApplication": true
+            }
+          },
+          {
+            "id": "ba069459-64df-5491-98f0-86c624a22ca7",
+            "shape": "store",
+            "zIndex": 2,
+            "position": {
+              "x": 345,
+              "y": 370
+            },
+            "size": {
+              "width": 180,
+              "height": 90
+            },
+            "attrs": {
+              "text": {
+                "text": "PostgreSQL / Prisma"
+              }
+            },
+            "data": {
+              "type": "tm.Store",
+              "name": "PostgreSQL / Prisma",
+              "description": "Код бойынша 14.10.2026 snapshot; controls жоспарланған болса Mitigated деп белгіленбейді.",
+              "isTrustBoundary": false,
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "hasOpenThreats": false,
+              "threats": [],
+              "storesCredentials": true,
+              "isALog": false,
+              "isEncrypted": false,
+              "isSigned": false
+            }
+          },
+          {
+            "id": "60a09c9c-6c4c-5fc2-bc71-1a19a6e6dea5",
+            "shape": "actor",
+            "zIndex": 2,
+            "position": {
+              "x": 675,
+              "y": 130
+            },
+            "size": {
+              "width": 180,
+              "height": 85
+            },
+            "attrs": {
+              "text": {
+                "text": "Gemini / OpenAI"
+              }
+            },
+            "data": {
+              "type": "tm.Actor",
+              "name": "Gemini / OpenAI",
+              "description": "Код бойынша 14.10.2026 snapshot; controls жоспарланған болса Mitigated деп белгіленбейді.",
+              "isTrustBoundary": false,
+              "outOfScope": false,
+              "reasonOutOfScope": "",
+              "hasOpenThreats": false,
+              "threats": []
+            }
+          },
+          {
+            "id": "5fdf67aa-537f-52b2-895a-716e157ac62b",
+            "shape": "trust-boundary-box",
+            "zIndex": 0,
+            "position": {
+              "x": 285,
+              "y": 35
+            },
+            "size": {
+              "width": 300,
+              "height": 265
+            },
+            "attrs": {
+              "text": {
+                "text": "TB1 — сервер ортасы"
+              }
+            },
+            "data": {
+              "type": "tm.BoundaryBox",
+              "name": "TB1 — сервер ортасы",
+              "description": "Логикалық сенім шекарасы; фактілік deployment желісі расталмаған.",
+              "isTrustBoundary": true,
+              "hasOpenThreats": false
+            }
+          },
+          {
+            "id": "3bd76b8d-52c7-55c1-abbe-54698f49577e",
+            "shape": "trust-boundary-box",
+            "zIndex": 0,
+            "position": {
+              "x": 285,
+              "y": 330
+            },
+            "size": {
+              "width": 300,
+              "height": 165
+            },
+            "attrs": {
+              "text": {
+                "text": "TB2 — DB қолжетімділігі"
+              }
+            },
+            "data": {
+              "type": "tm.BoundaryBox",
+              "name": "TB2 — DB қолжетімділігі",
+              "description": "Логикалық сенім шекарасы; фактілік deployment желісі расталмаған.",
+              "isTrustBoundary": true,
+              "hasOpenThreats": false
+            }
+          },
+          {
+            "id": "e749739b-1ca6-559c-b387-8a6458e578fd",
+            "shape": "trust-boundary-box",
+            "zIndex": 0,
+            "position": {
+              "x": 625,
+              "y": 35
+            },
+            "size": {
+              "width": 275,
+              "height": 265
+            },
+            "attrs": {
+              "text": {
+                "text": "TB3 — сыртқы AI провайдері"
+              }
+            },
+            "data": {
+              "type": "tm.BoundaryBox",
+              "name": "TB3 — сыртқы AI провайдері",
+              "description": "Логикалық сенім шекарасы; фактілік deployment желісі расталмаған.",
+              "isTrustBoundary": true,
+              "hasOpenThreats": false
+            }
+          },
+          {
+            "id": "c08b332f-ad31-5f23-902a-118dc8595898",
+            "shape": "flow",
+            "zIndex": 3,
+            "connector": "smooth",
+            "attrs": {
+              "line": {
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": "block"
+                }
+              }
+            },
+            "source": {
+              "cell": "9cf2609a-3a0c-5f01-bfc9-647ea689d786"
+            },
+            "target": {
+              "cell": "4901eb43-116b-52ab-9db0-d2491b48b376"
+            },
+            "labels": [
+              {
+                "position": 0.5,
+                "attrs": {
+                  "label": {
+                    "text": "F1: token, user input ↔ plan/reply"
+                  }
+                }
+              }
+            ],
+            "data": {
+              "type": "tm.Flow",
+              "name": "F1: token, user input ↔ plan/reply",
+              "description": "Сұрау және жауап. HTTPS browser→API үшін талап; live TLS дәлелі жоқ.",
+              "isTrustBoundary": false,
+              "outOfScope": false,
+              "hasOpenThreats": false,
+              "threats": [],
+              "protocol": "HTTP / HTTPS талап",
+              "isEncrypted": false,
+              "isPublicNetwork": true,
+              "isBidirectional": true
+            }
+          },
+          {
+            "id": "c5147703-3e80-5a57-ae11-7c2885907ca9",
+            "shape": "flow",
+            "zIndex": 3,
+            "connector": "smooth",
+            "attrs": {
+              "line": {
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": "block"
+                }
+              }
+            },
+            "source": {
+              "cell": "4901eb43-116b-52ab-9db0-d2491b48b376"
+            },
+            "target": {
+              "cell": "ba069459-64df-5491-98f0-86c624a22ca7"
+            },
+            "labels": [
+              {
+                "position": 0.5,
+                "attrs": {
+                  "label": {
+                    "text": "F2: userId, plans, messages ↔ rows"
+                  }
+                }
+              }
+            ],
+            "data": {
+              "type": "tm.Flow",
+              "name": "F2: userId, plans, messages ↔ rows",
+              "description": "Код бойынша дерек ағыны.",
+              "isTrustBoundary": false,
+              "outOfScope": false,
+              "hasOpenThreats": false,
+              "threats": [],
+              "protocol": "PostgreSQL",
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "isBidirectional": true
+            }
+          },
+          {
+            "id": "3d11902d-813d-5438-bf28-a601c81ab277",
+            "shape": "flow",
+            "zIndex": 3,
+            "connector": "smooth",
+            "attrs": {
+              "line": {
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": "block"
+                }
+              }
+            },
+            "source": {
+              "cell": "4901eb43-116b-52ab-9db0-d2491b48b376"
+            },
+            "target": {
+              "cell": "60a09c9c-6c4c-5fc2-bc71-1a19a6e6dea5"
+            },
+            "labels": [
+              {
+                "position": 0.5,
+                "attrs": {
+                  "label": {
+                    "text": "F3: соңғы 6 хабарлама + мәтін ↔ жауап"
+                  }
+                }
+              }
+            ],
+            "data": {
+              "type": "tm.Flow",
+              "name": "F3: соңғы 6 хабарлама + мәтін ↔ жауап",
+              "description": "Код бойынша дерек ағыны.",
+              "isTrustBoundary": false,
+              "outOfScope": false,
+              "hasOpenThreats": false,
+              "threats": [],
+              "protocol": "HTTPS",
+              "isEncrypted": true,
+              "isPublicNetwork": true,
+              "isBidirectional": true
+            }
+          }
+        ],
+        "thumbnail": ""
+      }
+    ],
+    "diagramTop": 1,
+    "threatTop": 6,
+    "reviewer": "Келесі шолу: 21.10.2026"
+  }
+}

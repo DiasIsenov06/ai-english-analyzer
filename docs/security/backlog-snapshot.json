@@ -1,0 +1,35 @@
+[
+  {
+    "key": "SEC-01",
+    "number": 2,
+    "url": "https://github.com/DiasIsenov06/ai-english-analyzer/issues/2",
+    "state": "open",
+    "assignee": "Rasuul255",
+    "owner": "Ақжан Расуул",
+    "due": "2026-10-16",
+    "priority": "P0",
+    "verified_at": "2026-10-14T09:54:10Z"
+  },
+  {
+    "key": "SEC-02",
+    "number": 3,
+    "url": "https://github.com/DiasIsenov06/ai-english-analyzer/issues/3",
+    "state": "open",
+    "assignee": "Rasuul255",
+    "owner": "Ақжан Расуул",
+    "due": "2026-10-18",
+    "priority": "P1",
+    "verified_at": "2026-10-14T09:54:17Z"
+  },
+  {
+    "key": "SEC-03",
+    "number": 4,
+    "url": "https://github.com/DiasIsenov06/ai-english-analyzer/issues/4",
+    "state": "open",
+    "assignee": "Rasuul255",
+    "owner": "Ақжан Расуул",
+    "due": "2026-10-21",
+    "priority": "P1",
+    "verified_at": "2026-10-14T09:54:25Z"
+  }
+]

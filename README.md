@@ -307,3 +307,7 @@ ai-english-analyzer/
 
 **Ақжан Расуул** — АЖ-37 тобы  
 GitHub: [DiasIsenov06/ai-english-analyzer](https://github.com/DiasIsenov06/ai-english-analyzer)
+
+## Лабораториялық жұмыс 7
+
+[RAID, STRIDE, сканерлеу және сәйкестік материалдары](docs/security/README.md) · [Үш тапсырма тақтасы](docs/security/board.md)
