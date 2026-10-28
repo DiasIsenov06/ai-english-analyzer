@@ -1,0 +1,26 @@
+{
+  "model": "ОҚУ СИМУЛЯЦИЯСЫ: нақты GitHub workflow емес",
+  "timezone": "Asia/Almaty",
+  "sprints": {
+    "1": {
+      "period": "2026-10-12 — 2026-10-16",
+      "planned_tasks": 6,
+      "throughput_tasks": 4,
+      "cycle_mean_days": 2.5938,
+      "cycle_p85_days": 3.15,
+      "review_mean_days": 1.6562,
+      "mean_daily_wip": 2.075,
+      "little_rhs": 2.075
+    },
+    "2": {
+      "period": "2026-10-19 — 2026-10-23",
+      "planned_tasks": 8,
+      "throughput_tasks": 6,
+      "cycle_mean_days": 1.25,
+      "cycle_p85_days": 1.625,
+      "review_mean_days": 0.5625,
+      "mean_daily_wip": 1.5,
+      "little_rhs": 1.5
+    }
+  }
+}
