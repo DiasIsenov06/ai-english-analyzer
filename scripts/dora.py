@@ -1,9 +1,9 @@
 """Real GitHub Actions DORA snapshot. No synthetic deployment data."""
-import os,json,csv,statistics,urllib.request,sys
+import os,json,csv,statistics,urllib.request,urllib.error,sys
 from datetime import datetime,timedelta,timezone
 from pathlib import Path
 BASE="https://api.github.com/repos/DiasIsenov06/ai-english-analyzer"
-OUT=Path("docs/ops/lab10")
+OUT=Path(__file__).resolve().parents[1]/"docs/ops/lab10"
 def dt(v):
     return datetime.fromisoformat(v.replace("Z","+00:00")) if v else None
 def fetch(url):
@@ -12,11 +12,18 @@ def fetch(url):
     with urllib.request.urlopen(urllib.request.Request(url,headers=headers),timeout=20) as f:
         return json.load(f)
 def deployments(api=fetch):
-    runs=api(BASE+"/actions/workflows/ci.yml/runs?branch=main&per_page=100").get("workflow_runs",[])
+    def pages(url,key):
+        result=[]
+        for page in range(1,101):
+            batch=api(url+f"&page={page}").get(key,[])
+            result.extend(batch)
+            if len(batch)<100:return result
+        raise RuntimeError('Pagination limit reached: incomplete history')
+    runs=pages(BASE+"/actions/workflows/ci.yml/runs?branch=main&per_page=100","workflow_runs")
     found=[]
     for run in runs:
         if run.get("head_branch")!="main" or run.get("event")!="push" or run.get("status")!="completed":continue
-        jobs=api(BASE+"/actions/runs/"+str(run["id"])+"/jobs?per_page=100").get("jobs",[])
+        jobs=pages(BASE+"/actions/runs/"+str(run["id"])+"/jobs?per_page=100","jobs")
         for job in jobs:
             if job.get("name")!="deploy-staging" or job.get("conclusion")!="success":continue
             stamp=api(BASE+"/commits/"+run["head_sha"])["commit"]["committer"]["date"]
@@ -39,10 +46,18 @@ def dashboard(m):
 def main():
     offline="--offline" in sys.argv
     end=dt(sys.argv[sys.argv.index("--offline")+1]) if offline and len(sys.argv)>sys.argv.index("--offline")+1 else datetime.now(timezone.utc)
-    runs=[] if offline else deployments()
+    error=None
+    try:
+        if offline:raise RuntimeError('Offline: deployments were not fetched')
+        runs=deployments()
+    except (urllib.error.URLError,RuntimeError) as exc:
+        runs=[];error=type(exc).__name__+': source unavailable or not fetched'
     with (OUT/"incidents.csv").open(encoding="utf-8",newline="") as f: incidents=list(csv.DictReader(f))
     verification=json.loads((OUT/"incident-verification.json").read_text(encoding="utf-8"))
     result=calculate(runs,incidents,end,verification.get("verified_through"))
+    result['source']={'api':BASE,'retrieved_at':datetime.now(timezone.utc).isoformat(),'complete':error is None,'error':error}
+    if error:
+        for key in ['deployments','frequency_per_week','lead_time_median_hours','change_failure_rate_pct','mttr_median_hours']:result[key]=None
     (OUT/"metrics.json").write_text(json.dumps(result,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     (OUT/"dashboard.html").write_text(dashboard(result),encoding="utf-8")
     print(json.dumps(result,ensure_ascii=False,indent=2))

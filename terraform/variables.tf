@@ -83,5 +83,9 @@ variable "ssh_public_key" {
 variable "allowed_ssh_cidr" {
   description = "SSH кіруге рұқсат етілген IP блоктары"
   type        = list(string)
-  default     = ["0.0.0.0/0"]
+  default     = []
+  validation {
+    condition     = !contains(var.allowed_ssh_cidr, "0.0.0.0/0") && !contains(var.allowed_ssh_cidr, "::/0")
+    error_message = "Restrict SSH to explicit administrator networks."
+  }
 }

@@ -30,3 +30,34 @@ def test_dashboard():
     assert "Н/Д" in dashboard(calculate([],[],NOW))
 def test_utc():
     assert dt("2026-11-04T09:00:00Z")==NOW
+
+def test_pagination_does_not_truncate_at_first_page():
+    seen=[]
+    def api(url):
+        seen.append(url)
+        if url.endswith('&page=1'):return {'workflow_runs':[{'head_branch':'feature'}]*100}
+        return {'workflow_runs':[]}
+    assert deployments(api)==[]
+    assert any('page=2' in url for url in seen)
+
+def test_unavailable_source_is_unknown(tmp_path,monkeypatch):
+    import json, urllib.error, scripts.dora as dora
+    (tmp_path/'incidents.csv').write_text('deployment_run_id,status\n',encoding='utf-8')
+    (tmp_path/'incident-verification.json').write_text('{}',encoding='utf-8')
+    monkeypatch.setattr(dora,'OUT',tmp_path)
+    monkeypatch.setattr(dora.sys,'argv',['dora.py'])
+    def unavailable():raise urllib.error.URLError('unavailable')
+    monkeypatch.setattr(dora,'deployments',unavailable)
+    dora.main()
+    result=json.loads((tmp_path/'metrics.json').read_text(encoding='utf-8'))
+    assert result['frequency_per_week'] is None
+    assert result['source']['complete'] is False
+
+def test_offline_source_cannot_be_reported_as_zero(tmp_path,monkeypatch):
+    import json, scripts.dora as dora
+    (tmp_path/'incidents.csv').write_text('deployment_run_id,status\n',encoding='utf-8')
+    (tmp_path/'incident-verification.json').write_text('{}',encoding='utf-8')
+    monkeypatch.setattr(dora,'OUT',tmp_path)
+    monkeypatch.setattr(dora.sys,'argv',['dora.py','--offline','2026-11-08T00:00:00Z'])
+    dora.main()
+    assert json.loads((tmp_path/'metrics.json').read_text(encoding='utf-8'))['deployments'] is None

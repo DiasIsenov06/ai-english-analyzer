@@ -10,20 +10,20 @@ export default function HomePage() {
 
   const faqs = [
     {
-      q: "Чем AI лучше обычных курсов?",
-      a: "AI анализирует каждую вашу ошибку в реальном времени и создаёт персональную программу, которая фокусируется именно на ваших слабых местах. Обычные курсы предлагают один путь для всех — мы подстраиваемся под вас.",
+      q: "Как работает обратная связь?",
+      a: "Короткий тест проверяется по ответам, а план учитывает слабую тему. В тренировке можно включить внешние AI-подсказки, если сервис доступен. Спорный совет стоит проверить с преподавателем.",
     },
     {
-      q: "Как оценивается Speaking?",
-      a: "Мы используем Speech-to-Text и NLP для анализа произношения, беглости речи и грамматики в реальном времени. Система даёт обратную связь по каждому произнесённому предложению.",
+      q: "Можно ли тренировать устную речь?",
+      a: "Сейчас доступны письменные упражнения для разговорной практики. Автоматической оценки голоса и произношения в этой версии нет.",
     },
     {
       q: "Подходит ли для IELTS?",
-      a: "Да! Доступна специализированная подготовка к IELTS с предсказанием band score и детальным анализом по каждому модулю экзамена.",
+      a: "Упражнения помогают практиковать английский, но не заменяют официальный IELTS и не предсказывают band score.",
     },
     {
       q: "Можно ли начать с нуля?",
-      a: "Конечно! Система определяет уровень от A1 до C2. Если вы начинаете с нуля, AI создаст план с базовой лексикой и грамматикой, постепенно усложняя материал.",
+      a: "Да. Начните с короткого теста и базовых упражнений. Тест даёт ориентир A1–B2, а не официальный сертификат; план рассчитан на 28 дней.",
     },
   ];
 
@@ -37,23 +37,23 @@ export default function HomePage() {
           <div>
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[rgba(79,124,255,0.08)] border border-[rgba(79,124,255,0.2)] text-[#4F7CFF] text-sm font-semibold mb-6">
               <span className="w-2 h-2 rounded-full bg-[#4F7CFF] animate-pulse" />
-              AI-анализ вашего английского в реальном времени
+              Диагностика, практика и персональный план
             </div>
             <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight mb-6">
-              Пойми свой реальный уровень английского с помощью{" "}
+              Найди свои слабые темы в английском с помощью{" "}
               <span className="bg-gradient-to-r from-[#4F7CFF] to-[#6AE3FF] bg-clip-text text-transparent">
-                AI-анализа
+                English Analyzer
               </span>
             </h1>
             <p className="text-xl text-gray-600 mb-8">
-              Персональная диагностика, анализ ошибок и умный план обучения от A1 до C2 — полностью автоматически. <strong className="text-[#4F7CFF]">100% бесплатно</strong>.
+              Короткий тест, анализ ответов и план на 28 дней. Учитесь в своём темпе; основные упражнения доступны без внешнего AI. <strong className="text-[#4F7CFF]">100% бесплатно</strong>.
             </p>
             <div className="flex flex-wrap gap-4 mb-8">
               <Link
                 href={user ? "/test" : "/register"}
                 className="px-8 py-4 bg-gradient-to-r from-[#4F7CFF] to-[#6AE3FF] text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-[#4F7CFF]/30 hover:-translate-y-1 transition-all"
               >
-                Пройти AI-диагностику
+                Пройти диагностику
               </Link>
               <Link
                 href={user ? "/dashboard" : "/login"}
@@ -73,19 +73,19 @@ export default function HomePage() {
                   </div>
                 ))}
               </div>
-              <span>1200+ студентов уже улучшили уровень</span>
+              <span>Тест → план → ежедневная практика</span>
             </div>
           </div>
           <div className="relative">
             <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-100">
               <div className="grid grid-cols-2 gap-4 mb-6">
                 <div className="bg-gray-50 rounded-xl p-4">
-                  <p className="text-sm text-gray-500">Grammar</p>
+                  <p className="text-sm text-gray-500">Grammar · пример</p>
                   <p className="text-2xl font-bold bg-gradient-to-r from-[#4F7CFF] to-[#6AE3FF] bg-clip-text text-transparent">72%</p>
                 </div>
                 <div className="bg-gray-50 rounded-xl p-4">
-                  <p className="text-sm text-gray-500">Vocabulary</p>
-                  <p className="text-2xl font-bold bg-gradient-to-r from-[#4F7CFF] to-[#6AE3FF] bg-clip-text text-transparent">1,240</p>
+                  <p className="text-sm text-gray-500">Vocabulary · пример</p>
+                  <p className="text-2xl font-bold bg-gradient-to-r from-[#4F7CFF] to-[#6AE3FF] bg-clip-text text-transparent">4 / 5</p>
                 </div>
               </div>
               <div className="flex items-center gap-4 p-4 bg-[#4F7CFF]/5 rounded-xl">
@@ -95,8 +95,8 @@ export default function HomePage() {
               </div>
             </div>
             <div className="absolute -bottom-4 -right-4 bg-white px-5 py-3 rounded-xl shadow-lg flex items-center gap-2">
-              <span className="text-amber-500 text-lg">⭐ 4.9 / 5</span>
-              <span className="text-sm text-gray-600">Средний рост +1.2 за 6 недель</span>
+              <span className="text-amber-500 text-lg">Пример</span>
+              <span className="text-sm text-gray-600">Результат зависит от вашей практики</span>
             </div>
           </div>
         </div>
@@ -106,7 +106,7 @@ export default function HomePage() {
       <div className="py-6 bg-white/60 border-y border-gray-100 overflow-hidden">
         <div className="flex animate-marquee w-max">
           {[...Array(2)].map((_, copy) =>
-            ["IELTS", "TOEFL", "Academic English", "Speaking Practice", "AI Assessment", "Grammar Engine", "Vocabulary System"].map((t, i) => (
+            ["Grammar", "Vocabulary", "Daily Practice", "Study Plan", "English Feedback", "Progress", "Sentence Correction"].map((t, i) => (
               <span key={`${copy}-${i}`} className="px-10 text-gray-400 font-semibold whitespace-nowrap">{t}</span>
             ))
           )}
@@ -120,12 +120,12 @@ export default function HomePage() {
           <p className="text-gray-600 text-center mb-12">Полный набор инструментов для диагностики и улучшения английского</p>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { title: "AI Placement Test", desc: "Grammar, Vocabulary, Reading, Listening, Writing, Speaking" },
+              { title: "Placement Test", desc: "13 вопросов: грамматика, лексика и исправление предложений" },
               { title: "Grammar Weakness Detection", desc: "Articles, Tenses, Conditionals, Passive Voice" },
-              { title: "Vocabulary Gap Analysis", desc: "A1–C2, Academic words, Daily conversation" },
+              { title: "Vocabulary Gap Analysis", desc: "Слова, переводы и примеры употребления" },
               { title: "Error Analysis Engine", desc: "Grammar error, Wrong tense, Word order, Spelling" },
-              { title: "Speaking Analyzer", desc: "Voice input, pronunciation check, accent analysis" },
-              { title: "Writing Feedback AI", desc: "Grammar score, Vocabulary score, IELTS band prediction" },
+              { title: "Daily Training", desc: "Письменная практика и общие подсказки без AI" },
+              { title: "28-day Study Plan", desc: "Ежедневные задания с отметками о выполнении" },
             ].map((f) => (
               <Link
                 key={f.title}
@@ -144,20 +144,20 @@ export default function HomePage() {
       <section className="py-20 px-4 bg-gradient-to-r from-[#4F7CFF] to-[#6AE3FF]">
         <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12 text-center text-white">
           <div>
-            <p className="text-3xl md:text-4xl font-extrabold">1200+</p>
-            <p className="opacity-90">пользователей</p>
+            <p className="text-3xl md:text-4xl font-extrabold">13</p>
+            <p className="opacity-90">вопросов в тесте</p>
           </div>
           <div>
-            <p className="text-3xl md:text-4xl font-extrabold">85%</p>
-            <p className="opacity-90">точность AI-оценки</p>
+            <p className="text-3xl md:text-4xl font-extrabold">28</p>
+            <p className="opacity-90">дней в новом плане</p>
           </div>
           <div>
-            <p className="text-3xl md:text-4xl font-extrabold">50 000+</p>
-            <p className="opacity-90">проанализированных ошибок</p>
+            <p className="text-3xl md:text-4xl font-extrabold">3</p>
+            <p className="opacity-90">раздела диагностики</p>
           </div>
           <div>
-            <p className="text-3xl md:text-4xl font-extrabold">+37%</p>
-            <p className="opacity-90">рост уровня за 2 месяца</p>
+            <p className="text-3xl md:text-4xl font-extrabold">AI</p>
+            <p className="opacity-90">подсказки по желанию</p>
           </div>
         </div>
       </section>
@@ -169,7 +169,7 @@ export default function HomePage() {
           <p className="text-gray-600 mb-12">Три простых шага до персонального плана обучения</p>
           <div className="grid md:grid-cols-3 gap-8">
             {[
-              { n: 1, title: "Пройди AI-диагностический тест", desc: "За 20 минут получи точную оценку уровня" },
+              { n: 1, title: "Пройди диагностический тест", desc: "Ответь на 13 вопросов и получи ориентир для обучения" },
               { n: 2, title: "Получи анализ слабых тем", desc: "Детальный отчёт с рекомендациями" },
               { n: 3, title: "Учись по персональному плану", desc: "Адаптивные упражнения под твой прогресс" },
             ].map((s) => (
@@ -218,13 +218,13 @@ export default function HomePage() {
       <section id="cta" className="py-20 px-4">
         <div className="max-w-3xl mx-auto bg-gradient-to-r from-[#4F7CFF] to-[#6AE3FF] rounded-2xl p-12 text-center">
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-8">
-            Начни понимать свой английский с помощью AI уже сегодня
+            Начни практиковать английский уже сегодня
           </h2>
           <Link
             href={user ? "/test" : "/register"}
             className="inline-block px-10 py-4 bg-white text-[#4F7CFF] rounded-xl font-bold hover:scale-105 transition-transform"
           >
-            Пройти AI-диагностику бесплатно
+            Пройти диагностику бесплатно
           </Link>
         </div>
       </section>

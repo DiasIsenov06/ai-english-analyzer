@@ -1,5 +1,7 @@
 "use client";
 
+import { authFetch } from "@/lib/authFetch";
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -105,7 +107,7 @@ function TestContent() {
         const storedUser: StoredUser = JSON.parse(storedUserRaw);
 
         if (storedUser.id) {
-          const saveResultResponse = await fetch("/api/test-results", {
+          const saveResultResponse = await authFetch("/api/test-results", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -128,7 +130,7 @@ function TestContent() {
             console.error("Test result save failed:", errorData);
           }
 
-          const onboardingResponse = await fetch(
+          const onboardingResponse = await authFetch(
             "/api/user/complete-onboarding",
             {
               method: "POST",

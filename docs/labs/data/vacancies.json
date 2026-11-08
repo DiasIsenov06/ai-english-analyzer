@@ -1,0 +1,165 @@
+[
+  {
+    "id": "V01",
+    "company": "EPAM",
+    "role": "AI Business Analyst",
+    "url": "https://careers.epam.com/en/vacancy/bltzdytaz9vy3hhjjom?country=Kazakhstan",
+    "accessed": "2026-11-08",
+    "tags": [
+      "experience",
+      "requirements",
+      "communication",
+      "english",
+      "ai",
+      "agile"
+    ],
+    "evidence": "4+ жыл BA, AI жобалары, stakeholder workshop, метрика/талап, C1; Agile сертификаты қосымша."
+  },
+  {
+    "id": "V02",
+    "company": "EPAM",
+    "role": "Business Analyst Life Science",
+    "url": "https://careers.epam.com/en/vacancy/bltb3fb0adddddcc79d",
+    "accessed": "2026-11-08",
+    "tags": [
+      "experience",
+      "requirements",
+      "communication",
+      "english",
+      "backlog",
+      "domain",
+      "regulation"
+    ],
+    "evidence": "Өмір ғылымдары домені, талаптарды бөлу, backlog, құжат, B2; регуляторлық білім қосымша."
+  },
+  {
+    "id": "V03",
+    "company": "EPAM",
+    "role": "Senior Delivery Manager",
+    "url": "https://careers.epam.com/en/vacancy/bltf8583262f2e02ca2?country=Kazakhstan",
+    "accessed": "2026-11-08",
+    "tags": [
+      "experience",
+      "requirements",
+      "communication",
+      "english",
+      "ai",
+      "agile",
+      "risk_budget",
+      "planning"
+    ],
+    "evidence": "7+ жыл, толық SDLC, WBS/resource/budget/risk, Agile, B2, GenAI."
+  },
+  {
+    "id": "V04",
+    "company": "EPAM",
+    "role": "Senior Card Management System Analyst",
+    "url": "https://careers.epam.com/en/vacancy/senior-card-management-system-analyst-bltkh546cucnqzxgmc5_en",
+    "accessed": "2026-11-08",
+    "tags": [
+      "experience",
+      "requirements",
+      "communication",
+      "english",
+      "sql_api",
+      "modelling",
+      "domain"
+    ],
+    "evidence": "3+ жыл, төлем карталары, тестіленетін талап, REST/SQL, BPMN/UML, B2."
+  },
+  {
+    "id": "V05",
+    "company": "DataArt",
+    "role": "Project Manager PMR00188",
+    "url": "https://team.dataart.com/vacancies/PMR00188",
+    "accessed": "2026-11-08",
+    "tags": [
+      "experience",
+      "communication",
+      "english",
+      "agile",
+      "tracker",
+      "risk_budget",
+      "planning"
+    ],
+    "evidence": "3+ жыл, таратылған команда, Scrum/Jira, scope, бюджет/тәуекел, upper-intermediate."
+  },
+  {
+    "id": "V06",
+    "company": "Qazpost Digital",
+    "role": "Project Manager",
+    "url": "https://sobes.tech/en/vacancies/fc585dfc-1ad4-445a-9725-266d51dd250a-project-manager",
+    "accessed": "2026-11-08",
+    "tags": [
+      "experience",
+      "agile",
+      "tracker",
+      "modelling"
+    ],
+    "evidence": "Астана, IT PM 2+ жыл, Jira/Confluence, Agile, BPMN. Қысқа агрегатор мәтіні ғана кодталды."
+  },
+  {
+    "id": "V07",
+    "company": "Itransition",
+    "role": "Project Manager Middle / Scrum Master",
+    "url": "https://kz.finder.work/vacancy/237330468",
+    "accessed": "2026-11-08",
+    "tags": [
+      "experience",
+      "agile",
+      "english",
+      "tracker",
+      "risk_budget"
+    ],
+    "evidence": "2+ жыл, Agile сертификат, Jira/Confluence, upper-intermediate; budget/risk қосымша."
+  },
+  {
+    "id": "V08",
+    "company": "BTS Digital",
+    "role": "Product Owner",
+    "url": "https://kz.finder.work/vacancy/307942016",
+    "accessed": "2026-11-08",
+    "tags": [
+      "experience",
+      "requirements",
+      "communication",
+      "english",
+      "agile",
+      "tracker",
+      "backlog",
+      "sql_api"
+    ],
+    "evidence": "Scrum, story/acceptance, backlog және өнім метрикасы; API түсінігі; ағылшын қосымша."
+  },
+  {
+    "id": "V09",
+    "company": "Центр электронных финансов",
+    "role": "Бизнес системный аналитик",
+    "url": "https://workbench.kz/job/biznes-sistemnyj-analitik-4/",
+    "accessed": "2026-11-08",
+    "tags": [
+      "experience",
+      "agile",
+      "sql_api",
+      "modelling"
+    ],
+    "evidence": "3+ жыл IT, Postman/SOAP/REST, BPMN/UML, Agile/Scrum."
+  },
+  {
+    "id": "V10",
+    "company": "ICSS",
+    "role": "Бизнес-аналитик",
+    "url": "https://workbench.kz/job/biznes-analitik-4/",
+    "accessed": "2026-11-08",
+    "tags": [
+      "experience",
+      "requirements",
+      "communication",
+      "ai",
+      "sql_api",
+      "modelling",
+      "risk_budget"
+    ],
+    "evidence": "2+ жыл, SQL/BI, AI, requirements/use cases/process, коммуникация; бюджеттеу қосымша."
+  }
+]

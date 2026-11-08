@@ -1,16 +1,12 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { authenticate } from "@/lib/requestAuth";
 
 export async function POST(request: Request) {
   try {
-    const { userId } = await request.json();
-
-    if (!userId) {
-      return NextResponse.json(
-        { error: "userId обязателен" },
-        { status: 400 }
-      );
-    }
+    const auth = await authenticate(request);
+    if (auth.response) return auth.response;
+    const userId = auth.userId;
 
     const updatedUser = await prisma.user.update({
       where: { id: userId },

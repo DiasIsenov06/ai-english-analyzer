@@ -1,0 +1,17 @@
+{
+  "start": "2026-11-01T00:00:00+05:00",
+  "end_exclusive": "2026-11-08T00:00:00+05:00",
+  "commit_count": 3,
+  "commit_shas": [
+    "6cde7355ad7bd0e34eb8d9c16dccfa19755e38c3",
+    "99b85bf2a59fd22bd0939ba148ac7815f2991946",
+    "c5789c3f772aa9841441ba812b1a6c55d8375041"
+  ],
+  "basis": "local fetched git refs, committer date, all branches; not deployed count",
+  "facts": {
+    "commit_count": 3,
+    "issues_created_in_window": 0,
+    "known_current_open_issues": 3
+  },
+  "tracker_snapshot_date": "2026-11-08T02:12:59.241412+00:00"
+}

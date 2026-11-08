@@ -1,0 +1,219 @@
+[
+  {
+    "id": "L01-01",
+    "lab": 1,
+    "requirement": "10 vacancy links + access date + frequency matrix",
+    "status": "implemented",
+    "evidence": "lab-01.md"
+  },
+  {
+    "id": "L01-02",
+    "lab": 1,
+    "requirement": "competence + weekly gap plan + failure case + charter",
+    "status": "implemented",
+    "evidence": "case-mco.md"
+  },
+  {
+    "id": "L02-01",
+    "lab": 2,
+    "requirement": "3 cases / 6 criteria + MADR decision",
+    "status": "implemented",
+    "evidence": "lab-02.md"
+  },
+  {
+    "id": "L02-02",
+    "lab": 2,
+    "requirement": "tracker fields/views/templates/wiki/DoR/DoD",
+    "status": "implemented",
+    "evidence": "board.html"
+  },
+  {
+    "id": "L02-03",
+    "lab": 2,
+    "requirement": "remote Projects/access administration",
+    "status": "external_pending",
+    "evidence": "lab-02.md"
+  },
+  {
+    "id": "L03-01",
+    "lab": 3,
+    "requirement": "4 alternatives, 3-year cost lines, formulas, sensitivities, charter",
+    "status": "implemented",
+    "evidence": "lab-03.md"
+  },
+  {
+    "id": "L03-02",
+    "lab": 3,
+    "requirement": "5-minute sponsor defence delivered",
+    "status": "human_pending",
+    "evidence": "lab-03.md"
+  },
+  {
+    "id": "L04-01",
+    "lab": 4,
+    "requirement": "stakeholders + comms + storymap +18stories +14NFR",
+    "status": "implemented",
+    "evidence": "lab-04.md"
+  },
+  {
+    "id": "L04-02",
+    "lab": 4,
+    "requirement": "2 actual interviews",
+    "status": "human_pending",
+    "evidence": "lab-04.md"
+  },
+  {
+    "id": "L05-01",
+    "lab": 5,
+    "requirement": "WBS3levels/5dictionary/3increments/deps/RACI/capacity/handover",
+    "status": "implemented",
+    "evidence": "lab-05.md"
+  },
+  {
+    "id": "L05-02",
+    "lab": 5,
+    "requirement": "capacity risk gap decision",
+    "status": "human_pending",
+    "evidence": "lab-05.md"
+  },
+  {
+    "id": "L06-01",
+    "lab": 6,
+    "requirement": "10000 bootstrap/seed42/percentiles/charts/notebook/slide",
+    "status": "modelled",
+    "evidence": "lab-06.md"
+  },
+  {
+    "id": "L06-02",
+    "lab": 6,
+    "requirement": "10-story poker round records",
+    "status": "modelled",
+    "evidence": "lab-06.md"
+  },
+  {
+    "id": "L07-01",
+    "lab": 7,
+    "requirement": "20risks/top5/RAID/EMV/STRIDE/compliance/3issues",
+    "status": "implemented",
+    "evidence": "lab-07.md"
+  },
+  {
+    "id": "L07-02",
+    "lab": 7,
+    "requirement": "actual Trivy/Gitleaks scans and risk mapping",
+    "status": "implemented",
+    "evidence": "evidence/security/provenance.json"
+  },
+  {
+    "id": "L07-03",
+    "lab": 7,
+    "requirement": "remaining infrastructure risk closure",
+    "status": "external_pending",
+    "evidence": "lab-07.md"
+  },
+  {
+    "id": "L08-01",
+    "lab": 8,
+    "requirement": "SoW/3journeys SLI SLO SLA/errorbudget",
+    "status": "modelled",
+    "evidence": "lab-08.md"
+  },
+  {
+    "id": "L08-02",
+    "lab": 8,
+    "requirement": "12monthbudget/unitcost/breakeven/3hosting36month",
+    "status": "modelled",
+    "evidence": "lab-08.md"
+  },
+  {
+    "id": "L09-01",
+    "lab": 9,
+    "requirement": "2sprint simulation data/metrics/CFD/oneaction",
+    "status": "modelled",
+    "evidence": "lab-09.md"
+  },
+  {
+    "id": "L09-02",
+    "lab": 9,
+    "requirement": "2 actual sprint transition exports and observed retro effect",
+    "status": "human_pending",
+    "evidence": "lab-09.md"
+  },
+  {
+    "id": "L10-01",
+    "lab": 10,
+    "requirement": "CI lint/tests/security/build/staging/smoke",
+    "status": "implemented",
+    "evidence": "lab-10.md"
+  },
+  {
+    "id": "L10-02",
+    "lab": 10,
+    "requirement": "API DORA, definitions, dashboard, rollback",
+    "status": "implemented",
+    "evidence": "lab-10.md"
+  },
+  {
+    "id": "L10-03",
+    "lab": 10,
+    "requirement": "remote green CI URL + protected main",
+    "status": "external_pending",
+    "evidence": "lab-10.md"
+  },
+  {
+    "id": "L11-01",
+    "lab": 11,
+    "requirement": "test strategy +9UATcases +postmortem +runbook",
+    "status": "implemented",
+    "evidence": "lab-11.md"
+  },
+  {
+    "id": "L11-02",
+    "lab": 11,
+    "requirement": "independent UAT/signature and fresh-user rehearsal",
+    "status": "human_pending",
+    "evidence": "lab-11.md"
+  },
+  {
+    "id": "L12-01",
+    "lab": 12,
+    "requirement": "featurecard/3approaches/30cases/runner/rulemetrics/costformula/ADR",
+    "status": "implemented",
+    "evidence": "lab-12.md"
+  },
+  {
+    "id": "L12-02",
+    "lab": 12,
+    "requirement": "independently human annotated gold",
+    "status": "human_pending",
+    "evidence": "lab-12.md"
+  },
+  {
+    "id": "L12-03",
+    "lab": 12,
+    "requirement": "live LLM metrics/tokens/modelversion",
+    "status": "deferred_by_user",
+    "evidence": "lab-12.md"
+  },
+  {
+    "id": "L13-01",
+    "lab": 13,
+    "requirement": "realgit/issuemetadata/two drafts/pipeline/schedule/verification/disclosure",
+    "status": "implemented",
+    "evidence": "lab-13.md"
+  },
+  {
+    "id": "L13-02",
+    "lab": 13,
+    "requirement": "LLM report factuality experiment",
+    "status": "deferred_by_user",
+    "evidence": "lab-13.md"
+  },
+  {
+    "id": "L13-03",
+    "lab": 13,
+    "requirement": "human timing baseline and observed payback",
+    "status": "human_pending",
+    "evidence": "lab-13.md"
+  }
+]

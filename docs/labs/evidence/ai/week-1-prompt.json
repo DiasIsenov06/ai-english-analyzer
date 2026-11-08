@@ -1,0 +1,4 @@
+{
+  "version": "1.0",
+  "prompt": "You draft a project status report in Kazakh. Use ONLY supplied numeric facts; unknown stays null. Do not invent dates, completions, owners, incidents, deployments or causality. Return JSON {\"claims\":[{\"fact\":\"key\",\"value\":number_or_null}],\"summary\":\"brief non-numeric narrative of the limitations\",\"risks\":[\"clearly conditional concern\"],\"next_steps\":[\"proposal\"]}. Each fact must appear exactly once. This is a DRAFT, not a sent message. Facts: {\"commit_count\": 2, \"issues_created_in_window\": 0, \"known_current_open_issues\": 3}"
+}

@@ -1,0 +1,145 @@
+{
+  "date": "2026-11-08",
+  "high_critical_dependency_findings": 0,
+  "high_critical_misconfig_findings": 15,
+  "findings": [
+    {
+      "target": "terraform/examples/01-rds-postgres/main.tf",
+      "id": "AWS-0104",
+      "severity": "CRITICAL",
+      "title": "A security group rule should not allow unrestricted egress to any IP address.",
+      "risk": "R12",
+      "owner": "Исенов Диас",
+      "due": "before any cloud deployment"
+    },
+    {
+      "target": "terraform/examples/02-alb-autoscaling/main.tf",
+      "id": "AWS-0052",
+      "severity": "HIGH",
+      "title": "Load balancers should drop invalid headers",
+      "risk": "R12",
+      "owner": "Исенов Диас",
+      "due": "before any cloud deployment"
+    },
+    {
+      "target": "terraform/examples/02-alb-autoscaling/main.tf",
+      "id": "AWS-0053",
+      "severity": "HIGH",
+      "title": "Load balancer is exposed to the internet.",
+      "risk": "R12",
+      "owner": "Исенов Диас",
+      "due": "before any cloud deployment"
+    },
+    {
+      "target": "terraform/examples/02-alb-autoscaling/main.tf",
+      "id": "AWS-0086",
+      "severity": "HIGH",
+      "title": "S3 Access block should block public ACL",
+      "risk": "R12",
+      "owner": "Исенов Диас",
+      "due": "before any cloud deployment"
+    },
+    {
+      "target": "terraform/examples/02-alb-autoscaling/main.tf",
+      "id": "AWS-0087",
+      "severity": "HIGH",
+      "title": "S3 Access block should block public policy",
+      "risk": "R12",
+      "owner": "Исенов Диас",
+      "due": "before any cloud deployment"
+    },
+    {
+      "target": "terraform/examples/02-alb-autoscaling/main.tf",
+      "id": "AWS-0091",
+      "severity": "HIGH",
+      "title": "S3 Access Block should Ignore Public ACL",
+      "risk": "R12",
+      "owner": "Исенов Диас",
+      "due": "before any cloud deployment"
+    },
+    {
+      "target": "terraform/examples/02-alb-autoscaling/main.tf",
+      "id": "AWS-0093",
+      "severity": "HIGH",
+      "title": "S3 Access block should restrict public bucket to limit access",
+      "risk": "R12",
+      "owner": "Исенов Диас",
+      "due": "before any cloud deployment"
+    },
+    {
+      "target": "terraform/examples/02-alb-autoscaling/main.tf",
+      "id": "AWS-0104",
+      "severity": "CRITICAL",
+      "title": "A security group rule should not allow unrestricted egress to any IP address.",
+      "risk": "R12",
+      "owner": "Исенов Диас",
+      "due": "before any cloud deployment"
+    },
+    {
+      "target": "terraform/examples/02-alb-autoscaling/main.tf",
+      "id": "AWS-0104",
+      "severity": "CRITICAL",
+      "title": "A security group rule should not allow unrestricted egress to any IP address.",
+      "risk": "R12",
+      "owner": "Исенов Диас",
+      "due": "before any cloud deployment"
+    },
+    {
+      "target": "terraform/examples/02-alb-autoscaling/main.tf",
+      "id": "AWS-0107",
+      "severity": "HIGH",
+      "title": "Security groups should not allow unrestricted ingress to SSH or RDP from any IP address.",
+      "risk": "R12",
+      "owner": "Исенов Диас",
+      "due": "before any cloud deployment"
+    },
+    {
+      "target": "terraform/examples/02-alb-autoscaling/main.tf",
+      "id": "AWS-0132",
+      "severity": "HIGH",
+      "title": "S3 encryption should use Customer Managed Keys",
+      "risk": "R12",
+      "owner": "Исенов Диас",
+      "due": "before any cloud deployment"
+    },
+    {
+      "target": "terraform/examples/03-s3-cloudfront/main.tf",
+      "id": "AWS-0011",
+      "severity": "HIGH",
+      "title": "CloudFront distribution does not have a WAF in front.",
+      "risk": "R12",
+      "owner": "Исенов Диас",
+      "due": "before any cloud deployment"
+    },
+    {
+      "target": "terraform/examples/03-s3-cloudfront/main.tf",
+      "id": "AWS-0132",
+      "severity": "HIGH",
+      "title": "S3 encryption should use Customer Managed Keys",
+      "risk": "R12",
+      "owner": "Исенов Диас",
+      "due": "before any cloud deployment"
+    },
+    {
+      "target": "terraform/examples/03-s3-cloudfront/main.tf",
+      "id": "AWS-0132",
+      "severity": "HIGH",
+      "title": "S3 encryption should use Customer Managed Keys",
+      "risk": "R12",
+      "owner": "Исенов Диас",
+      "due": "before any cloud deployment"
+    },
+    {
+      "target": "terraform/main.tf",
+      "id": "AWS-0104",
+      "severity": "CRITICAL",
+      "title": "A security group rule should not allow unrestricted egress to any IP address.",
+      "risk": "R12",
+      "owner": "Исенов Диас",
+      "due": "before any cloud deployment"
+    }
+  ],
+  "vulnerabilities": [],
+  "gitleaks": "0 current and 0 history after exact confirmed sample fingerprint exclusion",
+  "disposition": "Cloud examples are not deployed; remaining configuration findings block cloud use, not hidden or suppressed."
+}

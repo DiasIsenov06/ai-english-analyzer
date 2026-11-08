@@ -6,8 +6,9 @@ type Params = { id: string };
 
 export async function POST(
   request: Request,
-  { params }: { params: Params }
+  { params }: { params: Promise<Params> }
 ) {
+  const resolvedParams = await params;
   try {
     const token = getTokenFromRequest(request);
     if (!token) {
@@ -22,16 +23,17 @@ export async function POST(
     }
 
     const session = await prisma.trainingSession.findUnique({
-      where: { id: params.id },
+      where: { id: resolvedParams.id },
       include: { messages: { orderBy: { createdAt: "asc" } } },
     });
     if (!session || session.userId !== payload.userId) {
       return NextResponse.json({ error: "Не найдено" }, { status: 404 });
     }
+    if (session.status !== "active") return NextResponse.json({ error: "Сессия завершена" }, { status: 409 });
 
     const body = await request.json();
     const { content } = body as { content: string };
-    if (!content || typeof content !== "string") {
+    if (!content || typeof content !== "string" || content.length > 4000) {
       return NextResponse.json(
         { error: "content обязателен" },
         { status: 400 }
@@ -47,13 +49,14 @@ export async function POST(
       },
     });
 
-    const geminiKey = process.env.GEMINI_API_KEY?.trim();
-    const openaiKey = process.env.OPENAI_API_KEY?.trim();
+    const externalAI = body.useAI === true && process.env.AI_ENABLED !== "false";
+    const geminiKey = externalAI ? process.env.GEMINI_API_KEY?.trim() : undefined;
+    const openaiKey = externalAI ? process.env.OPENAI_API_KEY?.trim() : undefined;
     const useGemini = !!geminiKey;
     const apiKey = geminiKey || openaiKey;
 
     let assistantReply =
-      "Thanks for your message! Try to vary your vocabulary and pay attention to verb tenses. Write another short sentence on the same topic.";
+      "[Практика без AI] Check your sentence: does the subject agree with the verb? Underline the verb, check its tense, then write another sentence on the same topic. Это общий совет, ваш ответ не оценивался моделью.";
 
     if (apiKey) {
       try {
@@ -77,6 +80,7 @@ export async function POST(
             `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${geminiKey}`,
             {
               method: "POST",
+              signal: AbortSignal.timeout(12000),
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
                 systemInstruction: {
@@ -100,8 +104,7 @@ export async function POST(
               data.candidates?.[0]?.content?.parts?.[0]?.text;
             if (text) assistantReply = text;
           } else {
-            const errText = await res.text();
-            console.error("[Daily Training] Gemini API error:", res.status, errText);
+            console.error("[Daily Training] Gemini API error:", res.status);
           }
         } else {
           // OpenAI API
@@ -114,6 +117,7 @@ export async function POST(
 
           const res = await fetch("https://api.openai.com/v1/chat/completions", {
             method: "POST",
+              signal: AbortSignal.timeout(12000),
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${apiKey}`,
@@ -140,12 +144,11 @@ export async function POST(
               data.choices?.[0]?.message?.content;
             if (llmContent) assistantReply = llmContent;
           } else {
-            const errText = await res.text();
-            console.error("[Daily Training] OpenAI API error:", res.status, errText);
+            console.error("[Daily Training] OpenAI API error:", res.status);
           }
         }
       } catch (e) {
-        console.error("[Daily Training] LLM request failed:", e);
+        console.error("[Daily Training] LLM request failed; using local practice.");
       }
     } else {
       console.warn(
@@ -175,4 +178,3 @@ export async function POST(
     );
   }
 }
-

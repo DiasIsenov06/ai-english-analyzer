@@ -1,0 +1,186 @@
+{
+  "status": "provisional; NOT independently human validated gold",
+  "seed": "fixed authored cases v1",
+  "rows": [
+    {
+      "id": "E01",
+      "text": "She goes to school every day.",
+      "label": "correct",
+      "label_provenance": "synthetic draft; independent human annotation pending"
+    },
+    {
+      "id": "E02",
+      "text": "They are reading a book.",
+      "label": "correct",
+      "label_provenance": "synthetic draft; independent human annotation pending"
+    },
+    {
+      "id": "E03",
+      "text": "I saw him yesterday.",
+      "label": "correct",
+      "label_provenance": "synthetic draft; independent human annotation pending"
+    },
+    {
+      "id": "E04",
+      "text": "She has lived here for five years.",
+      "label": "correct",
+      "label_provenance": "synthetic draft; independent human annotation pending"
+    },
+    {
+      "id": "E05",
+      "text": "He does not like coffee.",
+      "label": "correct",
+      "label_provenance": "synthetic draft; independent human annotation pending"
+    },
+    {
+      "id": "E06",
+      "text": "If I had time, I would travel.",
+      "label": "correct",
+      "label_provenance": "synthetic draft; independent human annotation pending"
+    },
+    {
+      "id": "E07",
+      "text": "There are three apples.",
+      "label": "correct",
+      "label_provenance": "synthetic draft; independent human annotation pending"
+    },
+    {
+      "id": "E08",
+      "text": "I am interested in music.",
+      "label": "correct",
+      "label_provenance": "synthetic draft; independent human annotation pending"
+    },
+    {
+      "id": "E09",
+      "text": "She is taller than her brother.",
+      "label": "correct",
+      "label_provenance": "synthetic draft; independent human annotation pending"
+    },
+    {
+      "id": "E10",
+      "text": "We have already finished.",
+      "label": "correct",
+      "label_provenance": "synthetic draft; independent human annotation pending"
+    },
+    {
+      "id": "E11",
+      "text": "She go to school every day.",
+      "label": "incorrect",
+      "label_provenance": "synthetic draft; independent human annotation pending"
+    },
+    {
+      "id": "E12",
+      "text": "They is reading a book.",
+      "label": "incorrect",
+      "label_provenance": "synthetic draft; independent human annotation pending"
+    },
+    {
+      "id": "E13",
+      "text": "He do not like coffee.",
+      "label": "incorrect",
+      "label_provenance": "synthetic draft; independent human annotation pending"
+    },
+    {
+      "id": "E14",
+      "text": "She has lived here since five years.",
+      "label": "incorrect",
+      "label_provenance": "synthetic draft; independent human annotation pending"
+    },
+    {
+      "id": "E15",
+      "text": "I am agree with you.",
+      "label": "incorrect",
+      "label_provenance": "synthetic draft; independent human annotation pending"
+    },
+    {
+      "id": "E16",
+      "text": "There is three apples.",
+      "label": "incorrect",
+      "label_provenance": "synthetic draft; independent human annotation pending"
+    },
+    {
+      "id": "E17",
+      "text": "He can to swim.",
+      "label": "incorrect",
+      "label_provenance": "synthetic draft; independent human annotation pending"
+    },
+    {
+      "id": "E18",
+      "text": "She is more taller than me.",
+      "label": "incorrect",
+      "label_provenance": "synthetic draft; independent human annotation pending"
+    },
+    {
+      "id": "E19",
+      "text": "I have seen him yesterday.",
+      "label": "incorrect",
+      "label_provenance": "synthetic draft; independent human annotation pending"
+    },
+    {
+      "id": "E20",
+      "text": "I look forward to meet you.",
+      "label": "incorrect",
+      "label_provenance": "synthetic draft; independent human annotation pending"
+    },
+    {
+      "id": "E21",
+      "text": "The meeting was postponed / cancelled due to bad weather. Which word is correct?",
+      "label": "uncertain",
+      "label_provenance": "synthetic draft; independent human annotation pending"
+    },
+    {
+      "id": "E22",
+      "text": "I saw her duck. Explain what duck means.",
+      "label": "uncertain",
+      "label_provenance": "synthetic draft; independent human annotation pending"
+    },
+    {
+      "id": "E23",
+      "text": "They are at the bank. Is bank a river bank?",
+      "label": "uncertain",
+      "label_provenance": "synthetic draft; independent human annotation pending"
+    },
+    {
+      "id": "E24",
+      "text": "He said it was fine. Was he happy?",
+      "label": "uncertain",
+      "label_provenance": "synthetic draft; independent human annotation pending"
+    },
+    {
+      "id": "E25",
+      "text": "The teacher told the student that she was late. Who was late?",
+      "label": "uncertain",
+      "label_provenance": "synthetic draft; independent human annotation pending"
+    },
+    {
+      "id": "E26",
+      "text": "Is \"colour\" misspelled? The dialect is unspecified.",
+      "label": "uncertain",
+      "label_provenance": "synthetic draft; independent human annotation pending"
+    },
+    {
+      "id": "E27",
+      "text": "Is \"I have got a car\" wrong in English? Mark only if a dialect is specified.",
+      "label": "uncertain",
+      "label_provenance": "synthetic draft; independent human annotation pending"
+    },
+    {
+      "id": "E28",
+      "text": "She bought a bat. Is it an animal?",
+      "label": "uncertain",
+      "label_provenance": "synthetic draft; independent human annotation pending"
+    },
+    {
+      "id": "E29",
+      "text": "Is \"good\" the best synonym here? No sentence is provided.",
+      "label": "uncertain",
+      "label_provenance": "synthetic draft; independent human annotation pending"
+    },
+    {
+      "id": "E30",
+      "text": "What CEFR level is this student? One word is provided: hello.",
+      "label": "uncertain",
+      "label_provenance": "synthetic draft; independent human annotation pending"
+    }
+  ]
+}

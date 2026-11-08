@@ -1,0 +1,31 @@
+
+> ai-english-learning-analyzer@1.0.0 test:coverage
+> vitest run --coverage
+
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v5.1.0 C:/Projects/Проект новый/ai-english-analyzer
+      Coverage enabled with v8
+
+
+ Test Files  2 passed (2)
+      Tests  27 passed (27)
+   Start at  07:20:43
+   Duration  1.42s (tests 75%, import 19%, transform 3%, worker 3%)
+
+ % Coverage report from v8
+----------------|---------|----------|---------|---------|-------------------
+File            | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
+----------------|---------|----------|---------|---------|-------------------
+All files       |   96.42 |    97.36 |     100 |     100 |
+ auth.ts        |   94.11 |    91.66 |     100 |     100 | 34
+----------------|---------|----------|---------|---------|-------------------
+
+=============================== Coverage summary ===============================
+Statements   : 96.42% ( 27/28 )
+Branches     : 97.36% ( 37/38 )
+Functions    : 100% ( 10/10 )
+Lines        : 100% ( 24/24 )
+================================================================================

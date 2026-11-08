@@ -57,14 +57,16 @@ def main():
             start=D.datetime.combine(d,D.time(9));end=D.datetime.combine(d,D.time(17))
             t=end-D.timedelta(seconds=1)
             states={x:sum(state(r,t)==x for r in subset) for x in ('Done','Review','In progress','Ready','Backlog')}
-            wip=sum(hours(max(start,parse(r['started_at'])),min(end,parse(r['done_at']))) for r in finished if parse(r['started_at'])<end and parse(r['done_at'])>start)/8
+            wip=sum(hours(max(start,parse(r['started_at'])),min(end,parse(r['done_at']) or end)) for r in subset if parse(r['started_at']) and parse(r['started_at'])<end and (parse(r['done_at']) or end)>start)/8
             item={'sprint':s,'date':str(d),'avg_wip':round(wip,4),**states}
             samples.append(item);daily.append(item)
         avg_wip=mean(d['avg_wip'] for d in samples)
         summaries[str(s)]={'period':f'{first} — {first+D.timedelta(days=4)}','planned_tasks':len(subset),
           'throughput_tasks':len(finished),'cycle_mean_days':round(mean(cycle),4),
           'cycle_p85_days':round(quantile(cycle,.85),4),'review_mean_days':round(mean(review),4),
-          'mean_daily_wip':round(avg_wip,4),'little_rhs':round((len(finished)/5)*mean(cycle),4)}
+          'mean_daily_wip':round(avg_wip,4),'little_rhs':round((len(finished)/5)*mean(cycle),4),
+          'unfinished_started':sum(bool(r['started_at']) and not r['done_at'] for r in subset),
+          'little_caveat':'Finite window; completed-cycle cohort and all-item WIP need not satisfy steady-state identity.'}
         (ROOT/f'cfd-sprint-{s}.svg').write_text(svg(s,samples,subset),encoding='utf-8')
     def save_csv(name,arr):
         with (ROOT/name).open('w',encoding='utf-8',newline='') as f:

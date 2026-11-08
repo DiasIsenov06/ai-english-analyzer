@@ -1,0 +1,4 @@
+# Confirmed illustrative numeric-prefix/repeated-x placeholder in the original .env.example.
+# Exact historical fingerprint only; current files and all other commits remain scanned.
+# Evidence: docs/security/scans/gitleaks-redacted.json; no provider request was made.
+9f169fdde689af7c925782f2c564b6bf8620ab68:.env.example:telegram-bot-api-token:19

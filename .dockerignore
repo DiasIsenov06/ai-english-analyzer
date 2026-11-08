@@ -1,5 +1,8 @@
 node_modules
 .next
+.next-test
+test-results
+playwright-report
 .git
 .env
 .env*.local

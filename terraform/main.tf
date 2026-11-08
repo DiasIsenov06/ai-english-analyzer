@@ -47,7 +47,7 @@ resource "aws_subnet" "public_a" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = "10.0.1.0/24"
   availability_zone       = "${var.region}a"
-  map_public_ip_on_launch = true
+  map_public_ip_on_launch = false
   tags                    = { Name = "${var.project_name}-public-a" }
 }
 
@@ -55,7 +55,7 @@ resource "aws_subnet" "public_b" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = "10.0.2.0/24"
   availability_zone       = "${var.region}b"
-  map_public_ip_on_launch = true
+  map_public_ip_on_launch = false
   tags                    = { Name = "${var.project_name}-public-b" }
 }
 
@@ -118,7 +118,7 @@ resource "aws_security_group" "app" {
     from_port   = 3001
     to_port     = 3001
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = var.allowed_ssh_cidr
     description = "Grafana мониторинг"
   }
 
@@ -127,7 +127,7 @@ resource "aws_security_group" "app" {
     from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = var.allowed_ssh_cidr
     description = "Jenkins CI/CD"
   }
 
@@ -159,6 +159,10 @@ resource "aws_instance" "app" {
   subnet_id              = aws_subnet.public_a.id
   vpc_security_group_ids = [aws_security_group.app.id]
   key_name               = var.ssh_public_key != "" ? aws_key_pair.app[0].key_name : null
+  metadata_options {
+    http_endpoint = "enabled"
+    http_tokens   = "required"
+  }
 
   root_block_device {
     volume_size = 20

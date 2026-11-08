@@ -1,0 +1,19 @@
+{
+  "checks_passed": 157,
+  "errors": [],
+  "pending_requirements": [
+    "L02-03",
+    "L03-02",
+    "L04-02",
+    "L05-02",
+    "L07-03",
+    "L09-02",
+    "L10-03",
+    "L11-02",
+    "L12-02",
+    "L12-03",
+    "L13-02",
+    "L13-03"
+  ],
+  "note": "Passing validates artifacts, not pending external acceptance."
+}

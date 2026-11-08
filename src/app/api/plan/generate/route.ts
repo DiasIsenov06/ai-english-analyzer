@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { authenticate } from "@/lib/requestAuth";
 
 type GeneratedTask = {
   type: string;
@@ -178,19 +179,9 @@ function generateDayTasks(
 
 export async function POST(request: Request) {
   try {
-    const rawBody = await request.text();
-    const parsedBody = rawBody ? JSON.parse(rawBody) : {};
-    const url = new URL(request.url);
-
-    const userId =
-      parsedBody.userId || url.searchParams.get("userId");
-
-    if (!userId) {
-      return NextResponse.json(
-        { error: "userId is required" },
-        { status: 400 }
-      );
-    }
+    const auth = await authenticate(request);
+    if (auth.response) return auth.response;
+    const userId = auth.userId;
 
     const user = await prisma.user.findUnique({
       where: { id: userId },
@@ -231,52 +222,23 @@ export async function POST(request: Request) {
 
     const startDate = new Date();
 
+    // Nested writes are one transaction: no partially saved plan can be returned.
     const plan = await prisma.studyPlan.create({
       data: {
         userId,
-        metaJson: JSON.stringify({
-          level,
-          goal: user.goal ?? null,
-          weakFocus,
-          duration_days: 7,
-          source: "simple-logic-generator",
-        }),
+        metaJson: JSON.stringify({ level, goal: user.goal ?? null, weakFocus, duration_days: 28, source: "simple-logic-generator" }),
+        days: { create: Array.from({ length: 28 }, (_, index) => {
+          const dayIndex = index + 1;
+          const date = new Date(startDate);
+          date.setUTCDate(startDate.getUTCDate() + index);
+          return { dayIndex, date, dataJson: JSON.stringify({ title: `Day ${dayIndex}`, focus: weakFocus, level }), status: "pending",
+            tasks: { create: generateDayTasks(dayIndex, level, weakFocus).map(task => ({
+              type: task.type, title: task.title, contentJson: JSON.stringify(task.content), orderIndex: task.orderIndex, status: "pending",
+            })) },
+          };
+        }) },
       },
     });
-
-    for (let dayIndex = 1; dayIndex <= 7; dayIndex++) {
-      const date = new Date(startDate);
-      date.setDate(startDate.getDate() + (dayIndex - 1));
-
-      const day = await prisma.studyPlanDay.create({
-        data: {
-          planId: plan.id,
-          dayIndex,
-          date,
-          dataJson: JSON.stringify({
-            title: `Day ${dayIndex}`,
-            focus: weakFocus,
-            level,
-          }),
-          status: "pending",
-        },
-      });
-
-      const tasks = generateDayTasks(dayIndex, level, weakFocus);
-
-      for (const task of tasks) {
-        await prisma.studyTask.create({
-          data: {
-            dayId: day.id,
-            type: task.type,
-            title: task.title,
-            contentJson: JSON.stringify(task.content),
-            orderIndex: task.orderIndex,
-            status: "pending",
-          },
-        });
-      }
-    }
 
     return NextResponse.json({
       ok: true,

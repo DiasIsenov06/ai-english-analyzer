@@ -1,5 +1,7 @@
 "use client";
 
+import { authFetch } from "@/lib/authFetch";
+
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -95,7 +97,7 @@ function DashboardContent() {
           return;
         }
 
-        const res = await fetch(`/api/test-results?userId=${parsedUser.id}`);
+        const res = await authFetch(`/api/test-results?userId=${parsedUser.id}`);
         if (!res.ok) {
           setLoading(false);
           return;
@@ -124,7 +126,7 @@ function DashboardContent() {
         const parsedUser = JSON.parse(userRaw);
         if (!parsedUser?.id) return;
 
-        const res = await fetch(`/api/study-activity?userId=${parsedUser.id}`);
+        const res = await authFetch(`/api/study-activity?userId=${parsedUser.id}`);
         if (!res.ok) return;
 
         const data = await res.json();

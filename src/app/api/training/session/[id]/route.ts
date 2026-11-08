@@ -6,8 +6,9 @@ type Params = { id: string };
 
 export async function GET(
   request: Request,
-  { params }: { params: Params }
+  { params }: { params: Promise<Params> }
 ) {
+  const resolvedParams = await params;
   try {
     const token = getTokenFromRequest(request);
     if (!token) {
@@ -22,7 +23,7 @@ export async function GET(
     }
 
     const session = await prisma.trainingSession.findUnique({
-      where: { id: params.id },
+      where: { id: resolvedParams.id },
       include: { messages: { orderBy: { createdAt: "asc" } } },
     });
 
@@ -39,4 +40,3 @@ export async function GET(
     );
   }
 }
-

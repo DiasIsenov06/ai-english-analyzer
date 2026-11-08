@@ -1,0 +1,26 @@
+name: Draft weekly PM report
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 5 * * 1'
+permissions:
+  contents: read
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Create reviewed-facts draft (no outbound messages)
+        # AI disabled at the user's request; --live can be added after valid credentials and review.
+        run: python scripts/labs/ai_experiments.py --mode pm --rolling
+      - uses: actions/upload-artifact@v6
+        with:
+          name: pm-drafts-${{ github.run_id }}
+          path: docs/labs/evidence/ai/week-*-*.json
+          retention-days: 30

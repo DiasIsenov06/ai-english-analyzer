@@ -6,8 +6,9 @@ type Params = { id: string };
 
 export async function POST(
   request: Request,
-  { params }: { params: Params }
+  { params }: { params: Promise<Params> }
 ) {
+  const resolvedParams = await params;
   try {
     const token = getTokenFromRequest(request);
     if (!token) {
@@ -22,7 +23,7 @@ export async function POST(
     }
 
     const session = await prisma.trainingSession.findUnique({
-      where: { id: params.id },
+      where: { id: resolvedParams.id },
     });
     if (!session || session.userId !== payload.userId) {
       return NextResponse.json({ error: "Не найдено" }, { status: 404 });
@@ -49,4 +50,3 @@ export async function POST(
     );
   }
 }
-

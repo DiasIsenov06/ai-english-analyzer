@@ -194,8 +194,8 @@ export async function generateStudyPlanMock(
 export async function generateStudyPlan(
   skills: SkillBreakdown
 ): Promise<StudyPlanPayload> {
-  const geminiKey = process.env.GEMINI_API_KEY?.trim();
-  const openaiKey = process.env.OPENAI_API_KEY?.trim();
+  const geminiKey = process.env.AI_ENABLED === "false" ? undefined : process.env.GEMINI_API_KEY?.trim();
+  const openaiKey = process.env.AI_ENABLED === "false" ? undefined : process.env.OPENAI_API_KEY?.trim();
   const useGemini = !!geminiKey;
   const apiKey = geminiKey || openaiKey;
 
@@ -235,6 +235,7 @@ export async function generateStudyPlan(
         `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${geminiKey}`,
         {
           method: "POST",
+              signal: AbortSignal.timeout(12000),
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             systemInstruction: { parts: [{ text: systemPrompt }] },
@@ -253,6 +254,7 @@ export async function generateStudyPlan(
     } else {
       const res = await fetch("https://api.openai.com/v1/chat/completions", {
         method: "POST",
+              signal: AbortSignal.timeout(12000),
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${apiKey}`,
@@ -287,4 +289,3 @@ export async function generateStudyPlan(
     return generateStudyPlanMock(skills);
   }
 }
-

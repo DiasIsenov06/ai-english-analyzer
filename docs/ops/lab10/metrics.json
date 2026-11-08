@@ -1,14 +1,20 @@
 {
-  "period_utc": [
-    "2026-10-07T09:00:00+00:00",
-    "2026-11-04T09:00:00+00:00"
+  "period": [
+    "2026-10-11T02:09:00.539196+00:00",
+    "2026-11-08T02:09:00.539196+00:00"
   ],
-  "scope": "Successful main deploy-staging runs only (no deployment runs in 28-day baseline)",
+  "scope": "successful deploy-staging job on main only (temporary staging, not production)",
   "deployments": 0,
-  "frequency_per_week": 0,
+  "frequency_per_week": 0.0,
   "lead_time_median_hours": null,
   "change_failure_rate_pct": null,
   "mttr_median_hours": null,
   "incident_log_verified": false,
-  "evidence": "GitHub Actions 2026-11-04 main; pull_request and feature-branch CI runs do not count as deployment"
+  "runs": [],
+  "source": {
+    "api": "https://api.github.com/repos/DiasIsenov06/ai-english-analyzer",
+    "retrieved_at": "2026-11-08T02:09:01.431991+00:00",
+    "complete": true,
+    "error": null
+  }
 }

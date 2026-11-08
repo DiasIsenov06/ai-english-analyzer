@@ -2,7 +2,7 @@ name: AI English Analyzer CI
 
 on:
   push:
-    branches: [main, docs/lab10-ci-dora]
+    branches: [main, docs/lab10-ci-dora, 'codex/**']
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -19,13 +19,24 @@ jobs:
     name: quality
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: lab_test
+          POSTGRES_PASSWORD: lab_test_local_only
+          POSTGRES_DB: aea_lab_test
+        ports: ['55432:5432']
+        options: >-
+          --health-cmd "pg_isready -U lab_test -d aea_lab_test"
+          --health-interval 5s --health-timeout 5s --health-retries 10
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-      - name: Node.js 20
+      - name: Node.js 24
         uses: actions/setup-node@v7
         with:
-          node-version: '20'
+          node-version: '24'
           cache: npm
       - name: Install locked dependencies
         run: npm ci --no-audit --no-fund
@@ -37,6 +48,12 @@ jobs:
         run: npm run lint
       - name: TypeScript type check
         run: npx tsc --noEmit
+      - name: Auth, validation and owner regression
+        run: npm run test:coverage
+      - name: Browser dependencies
+        run: npx playwright install --with-deps chromium
+      - name: Isolated database and browser acceptance
+        run: npm run test:e2e
       - name: Python 3.12 for DORA reporting
         uses: actions/setup-python@v7
         with:
@@ -45,6 +62,8 @@ jobs:
         run: python -m pip install pytest pytest-cov
       - name: DORA script tests (coverage >= 55%)
         run: python -m pytest -q tests/lab10 --cov=scripts.dora --cov-fail-under=55
+      - name: Lab artifact consistency
+        run: python scripts/labs/verify_portfolio.py
       - name: Next.js build
         run: npm run build
         env:
@@ -100,8 +119,12 @@ jobs:
         run: |
           printf 'DATABASE_URL=postgresql://ai_user:ai_password@db:5432/ai_english_analyzer\nJWT_SECRET=%s\n' "$(openssl rand -hex 32)" > .env
           chmod 600 .env
-      - name: Start temporary Postgres + Next.js
-        run: docker compose up -d --build db app
+      - name: Start temporary Postgres and apply schema to disposable staging only
+        run: |
+          docker compose up -d --wait db
+          docker compose build app
+          docker compose run --rm app npx prisma db push
+          docker compose up -d app
       - name: Smoke test on ephemeral staging
         run: bash scripts/smoke-lab10.sh http://127.0.0.1:3000
       - name: Diagnostics on failure
