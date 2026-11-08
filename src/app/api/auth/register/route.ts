@@ -1,14 +1,15 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { hashPassword, createToken } from "@/lib/auth";
+import { validCredentials } from "@/lib/validation";
 
 export async function POST(request: Request) {
   try {
     const { email, password, level, goal } = await request.json();
 
-    if (!email || !password) {
+    if (!validCredentials(email, password)) {
       return NextResponse.json(
-        { error: "Email и пароль обязательны" },
+        { error: "Укажите email и пароль от 8 символов (не более 72 байт)" },
         { status: 400 }
       );
     }

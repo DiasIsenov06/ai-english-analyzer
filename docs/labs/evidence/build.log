@@ -1,0 +1,57 @@
+
+> ai-english-learning-analyzer@1.0.0 build
+> next build
+
+   ▲ Next.js 15.5.29
+   - Environments: .env
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 3.9s
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/25) ...
+   Generating static pages (6/25)
+   Generating static pages (12/25)
+   Generating static pages (18/25)
+ ✓ Generating static pages (25/25)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                 Size  First Load JS
+┌ ○ /                                    4.34 kB         111 kB
+├ ○ /_not-found                            997 B         104 kB
+├ ƒ /api/auth/login                        162 B         103 kB
+├ ƒ /api/auth/register                     162 B         103 kB
+├ ƒ /api/health                            162 B         103 kB
+├ ƒ /api/plan/current                      162 B         103 kB
+├ ƒ /api/plan/day/[dayId]                  162 B         103 kB
+├ ƒ /api/plan/generate                     162 B         103 kB
+├ ƒ /api/study-activity                    162 B         103 kB
+├ ƒ /api/test-results                      162 B         103 kB
+├ ƒ /api/test/results                      162 B         103 kB
+├ ƒ /api/training/session/[id]             162 B         103 kB
+├ ƒ /api/training/session/[id]/complete    162 B         103 kB
+├ ƒ /api/training/session/[id]/message     162 B         103 kB
+├ ƒ /api/training/session/start            162 B         103 kB
+├ ƒ /api/user/complete-onboarding          162 B         103 kB
+├ ○ /daily-plan                          4.26 kB         111 kB
+├ ƒ /daily-plan/[dayId]                  3.79 kB         110 kB
+├ ○ /dashboard                           6.74 kB         113 kB
+├ ○ /login                               1.77 kB         108 kB
+├ ○ /plan                                  162 B         103 kB
+├ ○ /privacy                               162 B         103 kB
+├ ○ /profile                             4.79 kB         111 kB
+├ ○ /register                            2.02 kB         108 kB
+├ ○ /result                              2.35 kB         114 kB
+├ ○ /test                                4.22 kB         112 kB
+├ ○ /training                            3.33 kB         106 kB
+├ ○ /vocabulary                          10.9 kB         114 kB
+└ ○ /welcome                             1.47 kB         110 kB
++ First Load JS shared by all             103 kB
+  ├ chunks/493-d3099f0aa7768a9d.js       46.6 kB
+  ├ chunks/4bd1b696-c023c6e3521b1417.js  54.2 kB
+  └ other shared chunks (total)          1.99 kB
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand

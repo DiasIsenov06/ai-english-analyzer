@@ -29,6 +29,7 @@ function TrainingContent() {
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
   const [input, setInput] = useState("");
+  const [useAI, setUseAI] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
@@ -92,7 +93,7 @@ function TrainingContent() {
           "Content-Type": "application/json",
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
-        body: JSON.stringify({ content }),
+        body: JSON.stringify({ content, useAI }),
       });
       if (!res.ok) throw new Error("Failed to send");
       const data = (await res.json()) as Session;
@@ -153,6 +154,13 @@ function TrainingContent() {
             )}
           </div>
 
+          <div className="px-5 py-3 bg-blue-50 text-sm text-slate-700">
+            <label className="flex items-start gap-2">
+              <input type="checkbox" checked={useAI} onChange={e => setUseAI(e.target.checked)} className="mt-1" />
+              <span>Использовать внешний AI для обратной связи. Текст и последние сообщения этой сессии будут переданы провайдеру. Не вводите личные данные.</span>
+            </label>
+            <p className="mt-2">AI может ошибаться. Уточните спорную оценку у преподавателя. Без AI доступны упражнения и общие подсказки. <a href="/privacy" className="underline">О данных</a></p>
+          </div>
           <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
             {loading && <p className="text-gray-500 text-sm">Загрузка...</p>}
             {error && (
@@ -201,7 +209,7 @@ function TrainingContent() {
 
         <aside className="rounded-2xl border border-gray-100 bg-white shadow-sm p-5">
           <p className="text-sm font-semibold text-gray-900 mb-2">
-            Today's tasks
+            Today&apos;s tasks
           </p>
           <p className="text-xs text-gray-500 mb-4">
             План дня формируется на основе плана и слабых навыков. Сейчас

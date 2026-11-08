@@ -1,0 +1,19 @@
+{
+  "at": "2026-11-08T02:14:25.191156+00:00",
+  "head": "ed0d90b29e018e53a26156103192e1cee83f180e",
+  "scope": "working source snapshot plus all fetched git history; excludes ignored .env and generated scan reports",
+  "results": {
+    "trivy": {
+      "exit_code": 1,
+      "report": "trivy.json"
+    },
+    "gitleaks-tree": {
+      "exit_code": 0,
+      "report": "gitleaks-tree.json"
+    },
+    "gitleaks-history": {
+      "exit_code": 0,
+      "report": "gitleaks-history.json"
+    }
+  }
+}

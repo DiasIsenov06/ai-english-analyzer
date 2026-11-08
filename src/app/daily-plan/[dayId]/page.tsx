@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { authFetch } from "@/lib/authFetch";
+
+import { useEffect, use, useMemo, useState, useCallback } from "react";
 import Link from "next/link";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import VocabularyFlashcard from "@/components/VocabularyFlashcard";
@@ -30,11 +32,12 @@ type ApiResponse = {
 export default function DailyPlanDayPage({
   params,
 }: {
-  params: { dayId: string };
+  params: Promise<{ dayId: string }>;
 }) {
+  const { dayId } = use(params);
   return (
     <ProtectedRoute>
-      <DailyPlanDayContent dayId={params.dayId} />
+      <DailyPlanDayContent dayId={dayId} />
     </ProtectedRoute>
   );
 }
@@ -47,7 +50,7 @@ function DailyPlanDayContent({ dayId }: { dayId: string }) {
 
   const [selectedWord, setSelectedWord] = useState<any>(null);
 
-  const fetchDay = async () => {
+  const fetchDay = useCallback(async () => {
     try {
       setLoading(true);
       setError("");
@@ -60,7 +63,7 @@ function DailyPlanDayContent({ dayId }: { dayId: string }) {
 
       const user = JSON.parse(userRaw);
 
-      const res = await fetch(`/api/plan/day/${dayId}?userId=${user.id}`);
+      const res = await authFetch(`/api/plan/day/${dayId}?userId=${user.id}`);
       const data: ApiResponse = await res.json();
 
       if (!res.ok || !data.day) {
@@ -76,11 +79,11 @@ function DailyPlanDayContent({ dayId }: { dayId: string }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [dayId]);
 
   useEffect(() => {
     fetchDay();
-  }, [dayId]);
+  }, [fetchDay]);
 
   const tasks = useMemo(() => {
     return [...(day?.tasks ?? [])].sort((a, b) => a.orderIndex - b.orderIndex);
@@ -95,7 +98,7 @@ function DailyPlanDayContent({ dayId }: { dayId: string }) {
     try {
       setCompleting(true);
 
-      const res = await fetch(`/api/plan/day/${dayId}`, {
+      const res = await authFetch(`/api/plan/day/${dayId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

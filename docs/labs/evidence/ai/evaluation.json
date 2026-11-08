@@ -1,0 +1,69 @@
+{
+  "date": "2026-11-08T02:07:34.231231+00:00",
+  "n": 30,
+  "classes_balanced": true,
+  "human_gold_verified": false,
+  "temperature": 0,
+  "batch_size": 30,
+  "approaches": {
+    "rule": {
+      "metrics": {
+        "n": 30,
+        "accuracy": 0.8666666666666667,
+        "macro_f1": 0.8680770553835568,
+        "per_class": {
+          "correct": {
+            "precision": 0.7142857142857143,
+            "recall": 1.0,
+            "f1": 0.8333333333333334
+          },
+          "incorrect": {
+            "precision": 1.0,
+            "recall": 0.7,
+            "f1": 0.8235294117647058
+          },
+          "uncertain": {
+            "precision": 1.0,
+            "recall": 0.9,
+            "f1": 0.9473684210526315
+          }
+        },
+        "confusion": {
+          "correct": {
+            "correct": 10,
+            "incorrect": 0,
+            "uncertain": 0,
+            "invalid": 0
+          },
+          "incorrect": {
+            "correct": 3,
+            "incorrect": 7,
+            "uncertain": 0,
+            "invalid": 0
+          },
+          "uncertain": {
+            "correct": 1,
+            "incorrect": 0,
+            "uncertain": 9,
+            "invalid": 0
+          }
+        }
+      },
+      "errors": [
+        "E14",
+        "E19",
+        "E20",
+        "E22"
+      ]
+    },
+    "zero_shot": {
+      "status": "blocked",
+      "reason": "API key not valid. Please pass a valid API key."
+    },
+    "few_shot": {
+      "status": "blocked",
+      "reason": "API key not valid. Please pass a valid API key."
+    }
+  },
+  "decision": "NO-GO automatic assessment until independent gold and representative holdout; practice suggestions only"
+}

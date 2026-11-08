@@ -5,6 +5,12 @@
 
 # testing
 /coverage
+/.next-test/
+/test-results/
+/playwright-report/
+__pycache__/
+.pytest_cache/
+.coverage
 
 # next.js
 /.next/

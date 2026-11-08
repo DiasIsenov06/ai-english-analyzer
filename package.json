@@ -11,32 +11,47 @@
     "db:push": "prisma db push",
     "db:seed": "npx ts-node --project tsconfig.seed.json prisma/seed.ts",
     "db:studio": "prisma studio",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "test:e2e": "playwright test",
+    "labs:verify": "python scripts/labs/verify_portfolio.py",
+    "predev": "node scripts/check-env.mjs",
+    "prestart": "node scripts/check-env.mjs"
   },
   "dependencies": {
     "@prisma/client": "^5.10.0",
     "bcryptjs": "^2.4.3",
     "date-fns": "^4.1.0",
     "jose": "^5.2.0",
-    "next": "^14.2.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "next": "15.5.29",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
   },
   "prisma": {
     "seed": "npx ts-node --project tsconfig.seed.json prisma/seed.ts"
   },
   "devDependencies": {
+    "@playwright/test": "1.65.0",
     "@types/bcryptjs": "^2.4.6",
-    "ts-node": "^10.9.2",
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@types/node": "24.19.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitest/coverage-v8": "5.1.0",
     "autoprefixer": "^10.4.17",
     "eslint": "^8",
-    "eslint-config-next": "^14.2.0",
-    "postcss": "^8.4.35",
+    "eslint-config-next": "15.5.29",
+    "postcss": "8.5.32",
     "prisma": "^5.10.0",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "ts-node": "^10.9.2",
+    "typescript": "^5",
+    "vitest": "5.1.0"
+  },
+  "overrides": {
+    "postcss": "$postcss",
+    "brace-expansion@1": "1.1.21",
+    "minimatch@9": "9.0.9"
   }
 }

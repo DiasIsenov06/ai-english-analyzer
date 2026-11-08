@@ -1,0 +1,15 @@
+name: ai-english-labs-test
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: lab_test
+      POSTGRES_PASSWORD: lab_test_local_only
+      POSTGRES_DB: aea_lab_test
+    ports: ["127.0.0.1:55432:5432"]
+    tmpfs: ["/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lab_test -d aea_lab_test"]
+      interval: 2s
+      timeout: 2s
+      retries: 30

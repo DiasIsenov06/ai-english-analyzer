@@ -1,0 +1,111 @@
+{
+  "date": "2026-11-08T02:21:14.702781+00:00",
+  "base_head": "ed0d90b29e018e53a26156103192e1cee83f180e",
+  "scope": "uncommitted working tree; local machine, not remote CI",
+  "commands": [
+    {
+      "name": "typecheck",
+      "command": [
+        "npm.cmd",
+        "run",
+        "typecheck"
+      ],
+      "exit_code": 0,
+      "seconds": 4.816,
+      "log": "typecheck.log"
+    },
+    {
+      "name": "lint",
+      "command": [
+        "npm.cmd",
+        "run",
+        "lint"
+      ],
+      "exit_code": 0,
+      "seconds": 4.407,
+      "log": "lint.log"
+    },
+    {
+      "name": "unit",
+      "command": [
+        "npm.cmd",
+        "run",
+        "test:coverage"
+      ],
+      "exit_code": 0,
+      "seconds": 3.32,
+      "log": "unit.log"
+    },
+    {
+      "name": "python",
+      "command": [
+        "C:\\Program Files\\WindowsApps\\OpenAI.CodexPrimaryRuntime.v26-1104-2876-0_26.1104.2876.0_x64__3k8sg7r9htsxt\\dependencies\\python\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/lab10",
+        "--cov=scripts.dora",
+        "--cov-fail-under=55"
+      ],
+      "exit_code": 0,
+      "seconds": 1.412,
+      "log": "python.log"
+    },
+    {
+      "name": "portfolio",
+      "command": [
+        "C:\\Program Files\\WindowsApps\\OpenAI.CodexPrimaryRuntime.v26-1104-2876-0_26.1104.2876.0_x64__3k8sg7r9htsxt\\dependencies\\python\\python.exe",
+        "scripts/labs/verify_portfolio.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.356,
+      "log": "portfolio.log"
+    },
+    {
+      "name": "build",
+      "command": [
+        "npm.cmd",
+        "run",
+        "build"
+      ],
+      "exit_code": 0,
+      "seconds": 23.227,
+      "log": "build.log"
+    },
+    {
+      "name": "audit",
+      "command": [
+        "npm.cmd",
+        "audit",
+        "--json"
+      ],
+      "exit_code": 1,
+      "seconds": 4.447,
+      "log": "audit.log"
+    }
+  ],
+  "playwright_last_run": {
+    "startTime": "2026-11-08T02:07:08.431Z",
+    "duration": 24577.120000000003,
+    "expected": 3,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "backup_restore": {
+    "environment": "disposable test compose only",
+    "source_user_count": 5,
+    "restored_user_count": 5,
+    "observed_command_seconds": 2.236,
+    "independent_human_review": false
+  },
+  "ai": "disabled by user; live provider rejected prior key; no fabricated metrics",
+  "docker_build": {
+    "status": "passed",
+    "image": "ai-english-analyzer:labs-local",
+    "image_manifest": "sha256:9fb322e22a9519c00ce8bb34588b7cc5f5ba5746c15e68a6ee972a54d46df9cf",
+    "runtime_user": "node",
+    "cloud_deployed": false
+  },
+  "final_home_copy_build": "passed; landing copy aligned to implemented 13-question test and 28-day plan; original visual design preserved"
+}

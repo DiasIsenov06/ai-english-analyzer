@@ -1,0 +1,11 @@
+..........                                                               [100%]
+=============================== tests coverage ================================
+______________ coverage: platform win32, python 3.12.14-final-0 _______________
+
+Name              Stmts   Miss  Cover
+-------------------------------------
+scripts\dora.py      63      5    92%
+-------------------------------------
+TOTAL                63      5    92%
+Required test coverage of 55% reached. Total coverage: 92.06%
+10 passed in 0.26s

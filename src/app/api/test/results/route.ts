@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { validResult } from "@/lib/validation";
 import { prisma } from "@/lib/prisma";
 import { verifyToken, getTokenFromRequest } from "@/lib/auth";
 
@@ -13,6 +14,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Недействительный токен" }, { status: 401 });
     }
     const body = await request.json();
+    if (!body || !validResult(body)) return NextResponse.json({ error: "Invalid result" }, { status: 400 });
     const { score, total, level, grammarScore, vocabularyScore, correctionScore, strengths, weaknesses } = body;
     const result = await prisma.testResult.create({
       data: {

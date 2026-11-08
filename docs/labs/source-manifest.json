@@ -1,0 +1,93 @@
+[
+  {
+    "lab": 1,
+    "filename": "ЛЗ 1. Пример выполнения (эталон).docx",
+    "sha256": "5f9b276ee8bf9ed99d42af9202ef7b8697d9cc3c7b5830130a2d3b77a4b61d0c",
+    "read_method": "all Word XML paragraphs and table cell text; no embedded images found",
+    "role": "reference example, not instructions to falsify external evidence"
+  },
+  {
+    "lab": 2,
+    "filename": "ЛЗ 2. Пример выполнения (эталон).docx",
+    "sha256": "df41897586af48ba26177717ebd6bb0a7e17275d409890009d2b18de3f35a8c2",
+    "read_method": "all Word XML paragraphs and table cell text; no embedded images found",
+    "role": "reference example, not instructions to falsify external evidence"
+  },
+  {
+    "lab": 3,
+    "filename": "ЛЗ 3. Пример выполнения (эталон).docx",
+    "sha256": "b04c7f0d23ea8adc1148e167124e983c12a241cb5ad3cde302c3cb3efad7f9d3",
+    "read_method": "all Word XML paragraphs and table cell text; no embedded images found",
+    "role": "reference example, not instructions to falsify external evidence"
+  },
+  {
+    "lab": 4,
+    "filename": "ЛЗ 4. Пример выполнения (эталон).docx",
+    "sha256": "02d6617b84341db81ea3d14ee1436aa50a662103e96149e4c530dea7ba7f0273",
+    "read_method": "all Word XML paragraphs and table cell text; no embedded images found",
+    "role": "reference example, not instructions to falsify external evidence"
+  },
+  {
+    "lab": 5,
+    "filename": "ЛЗ 5. Пример выполнения (эталон).docx",
+    "sha256": "7ade97b8288ebff406c14ab43f30ab52572bdba2cf83b10b8d886960a4662a26",
+    "read_method": "all Word XML paragraphs and table cell text; no embedded images found",
+    "role": "reference example, not instructions to falsify external evidence"
+  },
+  {
+    "lab": 6,
+    "filename": "ЛЗ 6. Пример выполнения (эталон).docx",
+    "sha256": "52cb2a94d76b76c1cbf2bd456660c9df6418d1f1f37ac3ff904ba8af873e46cf",
+    "read_method": "all Word XML paragraphs and table cell text; no embedded images found",
+    "role": "reference example, not instructions to falsify external evidence"
+  },
+  {
+    "lab": 7,
+    "filename": "ЛЗ 7. Пример выполнения (эталон).docx",
+    "sha256": "7c8f504f4b237b4029a401f2d03751d03ace35c27ee4095d9487a952c81e42e5",
+    "read_method": "all Word XML paragraphs and table cell text; no embedded images found",
+    "role": "reference example, not instructions to falsify external evidence"
+  },
+  {
+    "lab": 8,
+    "filename": "ЛЗ 8. Пример выполнения (эталон).docx",
+    "sha256": "382f45540b1e174c4e52af49b12345c615042743fe25e5ec9c332abcb3dac9ef",
+    "read_method": "all Word XML paragraphs and table cell text; no embedded images found",
+    "role": "reference example, not instructions to falsify external evidence"
+  },
+  {
+    "lab": 9,
+    "filename": "ЛЗ 9. Пример выполнения (эталон).docx",
+    "sha256": "82351b4f8bb1db5b59d79bf9728f9007643f8a422be4bfb3b6c5bd5d67848d7b",
+    "read_method": "all Word XML paragraphs and table cell text; no embedded images found",
+    "role": "reference example, not instructions to falsify external evidence"
+  },
+  {
+    "lab": 10,
+    "filename": "ЛЗ 10. Пример выполнения (эталон).docx",
+    "sha256": "61a673fd7754b9e9172821f5dee880613f6efdfd30bf2c869bdf34532412becb",
+    "read_method": "all Word XML paragraphs and table cell text; no embedded images found",
+    "role": "reference example, not instructions to falsify external evidence"
+  },
+  {
+    "lab": 11,
+    "filename": "ЛЗ 11. Пример выполнения (эталон).docx",
+    "sha256": "f355c3c34d0bde7a29979960c32088b05db6d20a81acea3044037d0039c360ba",
+    "read_method": "all Word XML paragraphs and table cell text; no embedded images found",
+    "role": "reference example, not instructions to falsify external evidence"
+  },
+  {
+    "lab": 12,
+    "filename": "ЛЗ 12. Пример выполнения (эталон).docx",
+    "sha256": "ef621fbff2607b502b8a2f4c6aa1349d107dc64ad51348142d67de8aec77da1f",
+    "read_method": "all Word XML paragraphs and table cell text; no embedded images found",
+    "role": "reference example, not instructions to falsify external evidence"
+  },
+  {
+    "lab": 13,
+    "filename": "ЛЗ 13. Пример выполнения (эталон).docx",
+    "sha256": "3a133b9ed1eb0854c72316fe66a559b8e7654852e52afcb23c66c41cb42d4b48",
+    "read_method": "all Word XML paragraphs and table cell text; no embedded images found",
+    "role": "reference example, not instructions to falsify external evidence"
+  }
+]

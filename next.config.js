@@ -1,4 +1,4 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = { distDir: process.env.NEXT_DIST_DIR || '.next', poweredByHeader: false };
 
 module.exports = nextConfig;

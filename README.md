@@ -1,7 +1,11 @@
 # AI English Learning Analyzer
 
-**Жасанды интеллект негізіндегі ағылшын тілін оқыту платформасы.**  
+**Жасанды интеллект негізіндегі ағылшын тілін оқыту платформасы.**
 Серверлік инфрақұрылымды жобалау және жүзеге асыру жобасы.
+
+[ЛЗ 1–13 толық портфолиосы](docs/labs/README.md) · [Жұмыс тақтасы](docs/labs/board.html) · [Іске қосу және тесттер](docs/labs/runbook.md)
+
+AI қазір пайдаланушы таңдауы бойынша өшірулі. Негізгі оқу жолы және 28 күндік жоспар жұмыс істейді.
 
 ---
 
@@ -35,7 +39,9 @@
 
 ---
 
-## Модульдер (100 балл)
+## Бастапқы модульдер тізімі
+
+Төмендегі тарихи белгілер тәуелсіз қабылдау дәлелі емес. Қазіргі нақты күй мен ашық талаптар [ЛЗ1–13 портфолиосында](docs/labs/README.md).
 
 | # | Модуль | Балл | Мәртебе |
 |---|--------|------|---------|
@@ -54,16 +60,16 @@
 
 ## Технологиялар стегі
 
-**Frontend:** Next.js 14, React 18, Tailwind CSS  
-**Backend:** Next.js API Routes, TypeScript  
-**Дерекқор:** PostgreSQL 16, Prisma ORM  
-**AI:** Google Gemini API, OpenAI API  
-**Контейнерлеу:** Docker, Docker Compose  
-**Reverse Proxy:** Nginx (SSL/TLS)  
-**Мониторинг:** Prometheus, Grafana, Alertmanager  
-**CI/CD:** Jenkins  
-**IaC:** Terraform, Ansible  
-**Қауіпсіздік:** UFW, Fail2Ban, JWT, bcrypt  
+**Frontend:** Next.js 15.5.29, React 19, Tailwind CSS
+**Backend:** Next.js API Routes, TypeScript
+**Дерекқор:** PostgreSQL 16, Prisma ORM
+**AI:** Google Gemini API, OpenAI API
+**Контейнерлеу:** Docker, Docker Compose
+**Reverse Proxy:** Nginx (SSL/TLS)
+**Мониторинг:** Prometheus, Grafana, Alertmanager
+**CI/CD:** Jenkins
+**IaC:** Terraform, Ansible
+**Қауіпсіздік:** UFW, Fail2Ban, JWT, bcrypt
 
 ---
 
@@ -97,6 +103,10 @@ cp .env.example .env
 
 ### 4. Docker Compose іске қосу
 ```bash
+# Тек жаңа жергілікті базаға schema қолдану, содан кейін app:
+docker compose up -d --wait db
+docker compose build app
+docker compose run --rm app npx prisma db push
 # Тек қосымша (жылдам):
 docker-compose up -d db app
 
@@ -245,7 +255,7 @@ User ─── TestResult
                             GrammarLesson
 ```
 
-**Demo кіру:** `demo@aienglish.kz` / `Test1234!`  
+**Demo кіру:** `demo@aienglish.kz` / `Test1234!`
 (npm run db:seed командасынан кейін)
 
 ---
@@ -305,7 +315,7 @@ ai-english-analyzer/
 
 ## Авторлар
 
-**Ақжан Расуул** — АЖ-37 тобы  
+**Азатұлы Есқат** — PM/BA; **Ақжан Расуул** — Full-stack/AI; **Исенов Диас** — QA/DevOps.
 GitHub: [DiasIsenov06/ai-english-analyzer](https://github.com/DiasIsenov06/ai-english-analyzer)
 
 ## Лабораториялық жұмыс 7

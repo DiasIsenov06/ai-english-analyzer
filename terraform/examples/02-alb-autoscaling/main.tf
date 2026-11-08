@@ -43,7 +43,10 @@ provider "aws" {
 variable "region"         { default = "eu-central-1" }
 variable "db_password"    { sensitive = true }
 variable "jwt_secret"     { sensitive = true }
-variable "gemini_api_key" { default = ""; sensitive = true }
+variable "gemini_api_key" {
+  default   = ""
+  sensitive = true
+}
 variable "ssh_public_key" { default = "" }
 
 variable "app_min_size"     { default = 2 }   # Минимум инстанс саны

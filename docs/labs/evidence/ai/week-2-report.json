@@ -1,0 +1,29 @@
+{
+  "status": "draft",
+  "facts": {
+    "commit_count": 3,
+    "issues_created_in_window": 0,
+    "known_current_open_issues": 3
+  },
+  "generated": null,
+  "automatic_verification": {
+    "checked_claims": 0,
+    "errors": [],
+    "missing_facts": [
+      "commit_count",
+      "issues_created_in_window",
+      "known_current_open_issues"
+    ],
+    "duplicates": false,
+    "error_rate": null,
+    "passed": false
+  },
+  "timing_seconds": {
+    "pipeline": 0.05383499999970809,
+    "automatic_verification": 8.50000014906982e-06,
+    "human_verification": null,
+    "manual_baseline": null
+  },
+  "human_review": "pending; automatic numeric equality does not validate narrative truth",
+  "payback": "unknown until manual baseline, setup time and human verification are measured"
+}

@@ -1,5 +1,7 @@
 "use client";
 
+import { authFetch } from "@/lib/authFetch";
+
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -62,7 +64,7 @@ function DailyPlanContent() {
         return;
       }
 
-      const res = await fetch(`/api/plan/current?userId=${user.id}`);
+      const res = await authFetch(`/api/plan/current?userId=${user.id}`);
       const data: CurrentPlanResponse = await res.json();
 
       if (!res.ok) {
@@ -104,7 +106,7 @@ function DailyPlanContent() {
         return;
       }
 
-      const res = await fetch("/api/plan/generate", {
+      const res = await authFetch("/api/plan/generate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -189,7 +191,7 @@ function DailyPlanContent() {
                 />
                 <InfoChip
                   label="Duration"
-                  value={`${parsedMeta.duration_days || 7} days`}
+                  value={`${parsedMeta.duration_days || totalDays || 28} days`}
                 />
               </div>
             </div>
@@ -204,7 +206,7 @@ function DailyPlanContent() {
               </p>
 
               <p className="text-sm text-gray-500 mt-1">
-                {completedDays} of {totalDays || 7} days completed
+                {completedDays} of {totalDays || 28} days completed
               </p>
 
               <div className="mt-4 h-3 rounded-full bg-gray-100 overflow-hidden">

@@ -6,7 +6,7 @@ export async function POST(request: Request) {
   try {
     const { email, password } = await request.json();
 
-    if (!email || !password) {
+    if (typeof email !== "string" || typeof password !== "string" || !email || !password || email.length > 254 || password.length > 256) {
       return NextResponse.json(
         { error: "Email и пароль обязательны" },
         { status: 400 }
