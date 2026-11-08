@@ -201,7 +201,7 @@ function TrainingContent() {
 
         <aside className="rounded-2xl border border-gray-100 bg-white shadow-sm p-5">
           <p className="text-sm font-semibold text-gray-900 mb-2">
-            Today's tasks
+            Today&apos;s tasks
           </p>
           <p className="text-xs text-gray-500 mb-4">
             План дня формируется на основе плана и слабых навыков. Сейчас
