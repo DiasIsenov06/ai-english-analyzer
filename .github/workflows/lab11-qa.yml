@@ -1,0 +1,22 @@
+name: Lab11 synthetic QA checks
+on:
+  push:
+    branches: [docs/lab11-qa-uat-runbook]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Generate safe synthetic QA data
+        run: python scripts/labs/seed_lab11.py --out /tmp/lab11-testdata
+      - name: Verify seed reproducibility
+        run: python -m unittest discover -s tests/lab11 -p 'test_*.py' -v
